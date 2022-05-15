@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Application.Securit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Application.CQRS", "GymMGMT.Application.CQRS\GymMGMT.Application.CQRS.csproj", "{A4DB070F-528B-47CE-998F-E08BDF78C7A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Application.Tests", "GymMGMT.Application.Tests\GymMGMT.Application.Tests.csproj", "{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Application.Tests", "GymMGMT.Application.Tests\GymMGMT.Application.Tests.csproj", "{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Persistence.EF", "GymMGMT.Persistence.EF\GymMGMT.Persistence.EF.csproj", "{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
