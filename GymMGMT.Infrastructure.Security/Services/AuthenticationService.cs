@@ -1,6 +1,8 @@
 ﻿using GymMGMT.Application.Contracts.Repositories;
+using GymMGMT.Application.Exceptions;
 using GymMGMT.Application.Models.Responses;
 using GymMGMT.Application.Security.Contracts;
+using GymMGMT.Application.Security.Exceptions;
 using GymMGMT.Application.Security.Models;
 using GymMGMT.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
@@ -23,27 +25,74 @@ namespace GymMGMT.Infrastructure.Security.Services
 
         public async Task<AuthenticationResponse> AuthenticateAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByEmailAsync(email);
+
+            if (user == null || BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                throw new UnauthorizedException("Invalid credentials. Please try again");
+            }
+
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+
+            AuthenticationResponse response = new AuthenticationResponse()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+            };
+
+            return response;
         }
 
-        public Task<Guid> CreateUserAsync(string email, string password)
+        public async Task<Guid> CreateUserAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user != null)
+                throw new ConflictException("User with this email is already exist");
+
+            var newUser = new User()
+            {
+                Email = email,
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
+                RegisteredAt = DateTimeOffset.Now,
+                Status = true
+            };
+
+            newUser = await _userRepository.AddAsync(newUser);
+
+            return newUser.Id;
         }
 
-        public Task<Guid> GetUserRoleAsync(Guid userId)
+        public async Task<string> GetUserRoleAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            var role = user.Role.Name;
+
+            return role;
         }
 
-        public Task<Guid> ChangeUserRoleAsync(Guid userId)
+        public async Task ChangeUserRoleAsync(Guid userId, Guid newRoleId)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            if(user == null)
+            {
+                throw new NotFoundException(nameof(User), userId);
+            }
+            if(!user.RoleId.Equals(userId))
+            {
+                user.RoleId = newRoleId;
+                await _userRepository.UpdateAsync(user);
+            }
         }
 
-        public Task DeleteUserAsync(Guid userId)
+        public async Task DeleteUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            if (user == null)
+            {
+                throw new NotFoundException(nameof(User), userId);
+            }
+            await _userRepository.DeleteAsync(user);
         }
 
         private async Task<JwtSecurityToken> GenerateToken(User user)

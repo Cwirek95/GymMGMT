@@ -6,8 +6,8 @@ namespace GymMGMT.Application.Security.Contracts
     {
         Task<AuthenticationResponse> AuthenticateAsync(string email, string password);
         Task<Guid> CreateUserAsync(string email, string password);
-        Task<Guid> GetUserRoleAsync(Guid userId);
-        Task<Guid> ChangeUserRoleAsync(Guid userId);
+        Task<string> GetUserRoleAsync(Guid userId);
+        Task ChangeUserRoleAsync(Guid userId, Guid newRoleId);
         Task DeleteUserAsync(Guid userId);
     }
 }

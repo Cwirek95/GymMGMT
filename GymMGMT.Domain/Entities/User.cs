@@ -11,7 +11,7 @@ namespace GymMGMT.Domain.Entities
         public DateTimeOffset RegisteredAt { get; set; }
 
 
-        public Guid RoleId { get; set; }
+        public Guid? RoleId { get; set; }
         public Role Role { get; set; }
     }
 }
