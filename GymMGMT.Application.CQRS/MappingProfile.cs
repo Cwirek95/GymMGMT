@@ -4,7 +4,7 @@ using GymMGMT.Application.CQRS.Auth.Queries.GetRoleDetail;
 using GymMGMT.Application.CQRS.Auth.Queries.GetRolesList;
 using GymMGMT.Domain.Entities;
 
-namespace GymMGMT.Application.CQRS.Mapper
+namespace GymMGMT.Application.CQRS
 {
     public class MappingProfile : Profile
     {

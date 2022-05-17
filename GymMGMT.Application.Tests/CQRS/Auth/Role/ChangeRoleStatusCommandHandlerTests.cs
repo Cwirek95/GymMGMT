@@ -32,7 +32,7 @@ namespace GymMGMT.Application.Tests.CQRS.Auth.Role
         }
 
         [Fact()]
-        public async Task Handle_ChangedStatus_ReturnOppositeStatus()
+        public async Task Handle_StatusChanged_ReturnOppositeStatus()
         {
             // Arrange
             var items = await _roleRepositoryMock.Object.GetAllAsync();

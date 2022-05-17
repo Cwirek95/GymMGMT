@@ -4,5 +4,6 @@
     {
         public string Name { get; set; }
         public bool Status { get; set; }
+        public IEnumerable<string> Users { get; set; }
     }
 }

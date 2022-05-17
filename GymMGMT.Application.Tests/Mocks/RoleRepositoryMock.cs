@@ -13,6 +13,7 @@ namespace GymMGMT.Application.Tests.Mocks
             var mockRoleRepository = new Mock<IRoleRepository>();
 
             mockRoleRepository.Setup(x => x.GetAllAsync()).ReturnsAsync(roles);
+            mockRoleRepository.Setup(x => x.GetAllWithDetailsAsync()).ReturnsAsync(roles);
             mockRoleRepository.Setup(x => x.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(
                 (Guid id) =>
                 {
@@ -26,10 +27,12 @@ namespace GymMGMT.Application.Tests.Mocks
                     return role;
                 });
             mockRoleRepository.Setup(x => x.UpdateAsync(It.IsAny<Role>())).Callback<Role>(
-                (role) =>
+                (Role role) =>
                 {
-                    roles.RemoveAll(x => x.Id == role.Id);
-                    roles.Add(role);
+                    var existRole = roles.FirstOrDefault(x => x.Id == role.Id);
+                    existRole.Id = role.Id;
+                    existRole.Name = role.Name;
+                    existRole.Status = role.Status;
                 });
             mockRoleRepository.Setup(x => x.DeleteAsync(It.IsAny<Role>())).Callback<Role>(
                 (role) =>
@@ -42,33 +45,10 @@ namespace GymMGMT.Application.Tests.Mocks
 
         private static List<Role> GetRoles()
         {
-            var roles = new List<Role>();
-
-            var role1 = new Role()
-            {
-                Id = Guid.NewGuid(),
-                Name = "RoleName1",
-                Status = true
-            };
-
-            var role2 = new Role()
-            {
-                Id = Guid.NewGuid(),
-                Name = "RoleName2",
-                Status = true
-            };
-
-            var role3 = new Role()
-            {
-                Id = Guid.NewGuid(),
-                Name = "RoleName3",
-                Status = true
-            };
-
             Fixture fixture = new Fixture();
-            var roles2 = fixture.Build<Role>().Without(x => x.Users).CreateMany().ToList();
+            var roles = fixture.Build<Role>().Without(x => x.Users).CreateMany().ToList();
 
-            return roles2;
+            return roles;
         }
     }
 }

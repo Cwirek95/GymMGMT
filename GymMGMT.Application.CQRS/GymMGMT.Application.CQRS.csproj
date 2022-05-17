@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GymMGMT.Application.Security\GymMGMT.Application.Security.csproj" />
     <ProjectReference Include="..\GymMGMT.Application\GymMGMT.Application.csproj" />
   </ItemGroup>
 

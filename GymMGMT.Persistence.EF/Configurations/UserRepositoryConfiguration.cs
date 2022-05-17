@@ -14,7 +14,7 @@ namespace GymMGMT.Persistence.EF.Configurations
                 .HasMaxLength(256);
             builder.Property(x => x.Password)
                 .IsRequired()
-                .HasMaxLength(256);
+                .HasMaxLength(1024);
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasDefaultValue(true);

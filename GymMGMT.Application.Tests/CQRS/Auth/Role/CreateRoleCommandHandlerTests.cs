@@ -1,6 +1,6 @@
 ﻿using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.CQRS.Auth.Commands.CreateRole;
-using GymMGMT.Application.CQRS.Mapper;
+using GymMGMT.Application.CQRS;
 using GymMGMT.Application.Tests.Mocks;
 
 namespace GymMGMT.Application.Tests.CQRS.Auth.Role

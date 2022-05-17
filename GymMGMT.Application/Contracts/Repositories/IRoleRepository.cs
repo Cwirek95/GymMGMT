@@ -4,5 +4,6 @@ namespace GymMGMT.Application.Contracts.Repositories
 {
     public interface IRoleRepository : IAsyncRepository<Role>
     {
+        Task<IReadOnlyList<Role>> GetAllWithDetailsAsync();
     }
 }

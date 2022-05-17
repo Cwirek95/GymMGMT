@@ -25,7 +25,7 @@ namespace GymMGMT.Infrastructure.Security.Services
 
         public async Task<AuthenticationResponse> AuthenticateAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByEmailWithDetailsAsync(email);
 
             if (user == null || BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
@@ -46,7 +46,7 @@ namespace GymMGMT.Infrastructure.Security.Services
 
         public async Task<Guid> CreateUserAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByEmailWithDetailsAsync(email);
             if (user != null)
                 throw new ConflictException("User with this email is already exist");
 
@@ -65,15 +65,26 @@ namespace GymMGMT.Infrastructure.Security.Services
 
         public async Task<string> GetUserRoleAsync(Guid userId)
         {
-            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            var user = await _userRepository.GetByIdWithDetailsAsync(userId);
             var role = user.Role.Name;
 
             return role;
         }
 
+        public async Task ChangeUserPasswordAsync(Guid userId, string oldPassword, string newPassword)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+                throw new BadRequestException("Invalid credentials", "Invalid credentials. Please try again.");
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            await _userRepository.UpdateAsync(user);
+        }
+
         public async Task ChangeUserRoleAsync(Guid userId, Guid newRoleId)
         {
-            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            var user = await _userRepository.GetByIdWithDetailsAsync(userId);
             if(user == null)
             {
                 throw new NotFoundException(nameof(User), userId);
@@ -87,7 +98,7 @@ namespace GymMGMT.Infrastructure.Security.Services
 
         public async Task DeleteUserAsync(Guid userId)
         {
-            var user = await _userRepository.GetByIdWithRoleAsync(userId);
+            var user = await _userRepository.GetByIdWithDetailsAsync(userId);
             if (user == null)
             {
                 throw new NotFoundException(nameof(User), userId);
