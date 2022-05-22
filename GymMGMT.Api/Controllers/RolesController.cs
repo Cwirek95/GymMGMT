@@ -53,13 +53,9 @@ namespace GymMGMT.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPost("[controller]")]
-        public async Task<ActionResult<RoleDetailViewModel>> Create([FromBody] CreateRoleCommand command)
+        public async Task<ActionResult<Guid>> Create([FromBody] CreateRoleCommand command)
         {
-            var createRoleCommand = new CreateRoleCommand()
-            {
-                Name = command.Name,
-            };
-            var response = await _mediator.Send(createRoleCommand);
+            var response = await _mediator.Send(command);
 
             return Ok(response);
         }
@@ -70,14 +66,9 @@ namespace GymMGMT.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPut("[controller]")]
-        public async Task<ActionResult<RoleDetailViewModel>> Update([FromBody] UpdateRoleCommand command)
+        public async Task<ActionResult> Update([FromBody] UpdateRoleCommand command)
         {
-            var updateRoleCommand = new UpdateRoleCommand()
-            {
-                Id = command.Id,
-                Name = command.Name,
-            };
-            var response = await _mediator.Send(updateRoleCommand);
+            var response = await _mediator.Send(command);
 
             return Ok(response);
         }
@@ -87,13 +78,9 @@ namespace GymMGMT.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPut("[controller]/changeStatus", Name = "ChangeRoleStatus")]
-        public async Task<ActionResult<RoleDetailViewModel>> ChangeStatus([FromBody] ChangeRoleStatusCommand command)
+        public async Task<ActionResult> ChangeStatus([FromBody] ChangeRoleStatusCommand command)
         {
-            var changeRoleStatusCommand = new ChangeRoleStatusCommand()
-            {
-                Id = command.Id,
-            };
-            var response = await _mediator.Send(changeRoleStatusCommand);
+            var response = await _mediator.Send(command);
 
             return Ok(response);
         }
@@ -103,13 +90,9 @@ namespace GymMGMT.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpDelete("[controller]")]
-        public async Task<ActionResult<RoleDetailViewModel>> Delete([FromBody] DeleteRoleCommand command)
+        public async Task<ActionResult> Delete([FromBody] DeleteRoleCommand command)
         {
-            var deleteRoleCommand = new DeleteRoleCommand()
-            {
-                Id = command.Id,
-            };
-            var response = await _mediator.Send(deleteRoleCommand);
+            var response = await _mediator.Send(command);
 
             return Ok(response);
         }
