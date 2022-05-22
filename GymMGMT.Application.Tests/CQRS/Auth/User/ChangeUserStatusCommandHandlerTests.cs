@@ -1,6 +1,5 @@
 ﻿using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangeUserStatus;
-using GymMGMT.Application.Security.Contracts;
 using GymMGMT.Application.Tests.Mocks;
 
 namespace GymMGMT.Application.Tests.CQRS.Auth.User

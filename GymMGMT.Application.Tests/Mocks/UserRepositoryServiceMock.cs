@@ -79,6 +79,12 @@ namespace GymMGMT.Application.Tests.Mocks
                     var user = users.FirstOrDefault(x => x.Id == userId);
                     user.Password = newPassword;
                 });
+            mockAuthService.Setup(x => x.ChangeUserRoleAsync(It.IsAny<Guid>(), It.IsAny<Guid>())).Callback(
+                (Guid userId, Guid roleId) =>
+                {
+                    var user = users.FirstOrDefault(x => x.Id == userId);
+                    user.RoleId = roleId;
+                });
 
             return mockAuthService;
         }
