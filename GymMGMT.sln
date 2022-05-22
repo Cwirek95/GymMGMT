@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Application.CQRS", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Application.Tests", "GymMGMT.Application.Tests\GymMGMT.Application.Tests.csproj", "{A2F8B04C-F7A1-48A6-AE9E-7FDEA9161441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Persistence.EF", "GymMGMT.Persistence.EF\GymMGMT.Persistence.EF.csproj", "{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Persistence.EF", "GymMGMT.Persistence.EF\GymMGMT.Persistence.EF.csproj", "{CF9BAE9A-B4CB-44D0-8DB9-F6325D39E90C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Infrastructure.Security", "GymMGMT.Infrastructure.Security\GymMGMT.Infrastructure.Security.csproj", "{EE5150C3-9937-4375-B7AF-16EF6834F18C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Infrastructure.Security", "GymMGMT.Infrastructure.Security\GymMGMT.Infrastructure.Security.csproj", "{EE5150C3-9937-4375-B7AF-16EF6834F18C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Api", "GymMGMT.Api\GymMGMT.Api.csproj", "{7A0F77FF-1497-4B88-9B9D-7338E2F99DE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{EE5150C3-9937-4375-B7AF-16EF6834F18C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE5150C3-9937-4375-B7AF-16EF6834F18C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE5150C3-9937-4375-B7AF-16EF6834F18C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0F77FF-1497-4B88-9B9D-7338E2F99DE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0F77FF-1497-4B88-9B9D-7338E2F99DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0F77FF-1497-4B88-9B9D-7338E2F99DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0F77FF-1497-4B88-9B9D-7338E2F99DE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
