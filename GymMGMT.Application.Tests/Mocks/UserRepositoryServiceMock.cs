@@ -85,6 +85,12 @@ namespace GymMGMT.Application.Tests.Mocks
                     var user = users.FirstOrDefault(x => x.Id == userId);
                     user.RoleId = roleId;
                 });
+            mockAuthService.Setup(x => x.DeleteUserAsync(It.IsAny<Guid>())).Callback(
+                (Guid userId) =>
+                {
+                    var user = users.FirstOrDefault(x => x.Id == userId);
+                    users.Remove(user);
+                });
 
             return mockAuthService;
         }

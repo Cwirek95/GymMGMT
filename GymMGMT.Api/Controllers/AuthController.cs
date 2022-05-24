@@ -9,9 +9,9 @@ namespace GymMGMT.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly ISender _mediator;
+        private readonly IMediator _mediator;
 
-        public AuthController(ISender mediator)
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
         }

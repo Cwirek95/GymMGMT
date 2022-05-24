@@ -7,15 +7,15 @@ using GymMGMT.Application.CQRS.Auth.Queries.GetRolesList;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GymMGMT.Api.Controllers
+namespace GymMGMT.Api.Controllers.Admin
 {
-    [Route("api")]
+    [Route("api/admin")]
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly ISender _mediator;
+        private readonly IMediator _mediator;
 
-        public RolesController(ISender mediator)
+        public RolesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -39,11 +39,7 @@ namespace GymMGMT.Api.Controllers
         [HttpGet("[controller]/detail")]
         public async Task<ActionResult<RoleDetailViewModel>> Detail([FromBody] GetRoleDetailQuery query)
         {
-            var getRoleDetail = new GetRoleDetailQuery()
-            {
-                Id = query.Id,
-            };
-            var response = await _mediator.Send(getRoleDetail);
+            var response = await _mediator.Send(query);
 
             return Ok(response);
         }
