@@ -60,7 +60,7 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]/changePassword", Name = "ChangeUserRole")]
+        [HttpPut("[controller]/changeRole", Name = "ChangeUserRole")]
         public async Task<ActionResult> ChangeUserRole([FromBody] ChangeUserRoleCommand command)
         {
             var response = await _mediator.Send(command);

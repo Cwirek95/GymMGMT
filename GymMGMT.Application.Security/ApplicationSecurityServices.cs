@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace GymMGMT.Application.Security
 {
     public static class ApplicationSecurityServices
     {
+        public static IServiceCollection AddApplicationSecurityServices(this IServiceCollection services)
+        {
+            return services;
+        }
     }
 }
