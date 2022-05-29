@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GymMGMT.Application.CQRS\GymMGMT.Application.CQRS.csproj" />
+    <ProjectReference Include="..\GymMGMT.Application.Security\GymMGMT.Application.Security.csproj" />
     <ProjectReference Include="..\GymMGMT.Application\GymMGMT.Application.csproj" />
+    <ProjectReference Include="..\GymMGMT.Infrastructure.Security\GymMGMT.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\GymMGMT.Persistence.EF\GymMGMT.Persistence.EF.csproj" />
   </ItemGroup>
 
