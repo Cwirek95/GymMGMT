@@ -29,7 +29,7 @@ namespace GymMGMT.Application.Tests.CQRS.Auth.User
             var items = await _userRepositoryMock.Object.GetAllAsync();
             var command = new DeleteUserCommand()
             {
-                Id = items.Last().Id
+                Id = items.ToList().ElementAt(5).Id
             };
 
             // Act
@@ -48,7 +48,7 @@ namespace GymMGMT.Application.Tests.CQRS.Auth.User
             var countBefore = (await _userRepositoryMock.Object.GetAllAsync()).Count();
             var command = new DeleteUserCommand()
             {
-                Id = items.Last().Id
+                Id = items.ToList().ElementAt(3).Id
             };
 
             // Act

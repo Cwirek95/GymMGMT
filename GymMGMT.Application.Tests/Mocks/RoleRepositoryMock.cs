@@ -46,7 +46,7 @@ namespace GymMGMT.Application.Tests.Mocks
         private static List<Role> GetRoles()
         {
             Fixture fixture = new Fixture();
-            var roles = fixture.Build<Role>().Without(x => x.Users).CreateMany().ToList();
+            var roles = fixture.Build<Role>().Without(x => x.Users).CreateMany(10).ToList();
 
             return roles;
         }

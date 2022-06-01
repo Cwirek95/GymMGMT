@@ -5,6 +5,7 @@ using GymMGMT.Application.CQRS.Auth.Commands.UpdateRole;
 using GymMGMT.Application.CQRS.Auth.Queries.GetRoleDetail;
 using GymMGMT.Application.CQRS.Auth.Queries.GetRolesList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymMGMT.Api.Controllers.Admin
@@ -64,9 +65,9 @@ namespace GymMGMT.Api.Controllers.Admin
         [HttpPut("[controller]")]
         public async Task<ActionResult> Update([FromBody] UpdateRoleCommand command)
         {
-            var response = await _mediator.Send(command);
+            await _mediator.Send(command);
 
-            return Ok(response);
+            return NoContent();
         }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -76,9 +77,9 @@ namespace GymMGMT.Api.Controllers.Admin
         [HttpPut("[controller]/changeStatus", Name = "ChangeRoleStatus")]
         public async Task<ActionResult> ChangeStatus([FromBody] ChangeRoleStatusCommand command)
         {
-            var response = await _mediator.Send(command);
+            await _mediator.Send(command);
 
-            return Ok(response);
+            return NoContent();
         }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -88,9 +89,9 @@ namespace GymMGMT.Api.Controllers.Admin
         [HttpDelete("[controller]")]
         public async Task<ActionResult> Delete([FromBody] DeleteRoleCommand command)
         {
-            var response = await _mediator.Send(command);
+            await _mediator.Send(command);
 
-            return Ok(response);
+            return NoContent();
         }
     }
 }

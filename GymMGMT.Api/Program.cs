@@ -1,5 +1,8 @@
+using GymMGMT.Api.Middleware;
+using GymMGMT.Api.Services;
 using GymMGMT.Application;
-using GymMGMT.Application.Security;
+using GymMGMT.Application.CQRS;
+using GymMGMT.Application.Security.Contracts;
 using GymMGMT.Infrastructure.Security;
 using GymMGMT.Persistence.EF;
 using Microsoft.OpenApi.Models;
@@ -8,11 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
+builder.Services.AddApplicationCqrsServices();
 builder.Services.AddPersistenceEfServices(builder.Configuration);
 builder.Services.AddInfrastructureSecurityServices(builder.Configuration);
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -62,6 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.DisplayRequestDuration());
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

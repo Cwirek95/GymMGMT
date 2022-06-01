@@ -5,6 +5,7 @@ using GymMGMT.Application.Security.Contracts;
 using GymMGMT.Application.Security.Exceptions;
 using GymMGMT.Application.Security.Models;
 using GymMGMT.Domain.Entities;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,9 +18,9 @@ namespace GymMGMT.Infrastructure.Security.Services
         private readonly JwtSettings _jwtSettings;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticationService(JwtSettings jwtSettings, IUserRepository userRepository)
+        public AuthenticationService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
         {
-            _jwtSettings = jwtSettings;
+            _jwtSettings = jwtSettings.Value;
             _userRepository = userRepository;
         }
 
