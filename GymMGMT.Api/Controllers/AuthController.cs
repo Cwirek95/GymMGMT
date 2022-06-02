@@ -1,12 +1,14 @@
 ﻿using GymMGMT.Application.CQRS.Auth.Commands.CreateUser;
 using GymMGMT.Application.CQRS.Auth.Commands.SignInUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymMGMT.Api.Controllers
 {
     [Route("api")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;

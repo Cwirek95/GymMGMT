@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Queries.GetUsersList
 {
-    public class GetUsersListQueryHandler : IRequestHandler<GetUsersListQuery, UsersInListViewModel>
+    public class GetUsersListQueryHandler : IRequestHandler<GetUsersListQuery, IEnumerable<UsersInListViewModel>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -15,11 +15,11 @@ namespace GymMGMT.Application.CQRS.Auth.Queries.GetUsersList
             _mapper = mapper;
         }
 
-        public async Task<UsersInListViewModel> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UsersInListViewModel>> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
         {
             var users = await _userRepository.GetAllAsync();
 
-            return _mapper.Map<UsersInListViewModel>(users);
+            return _mapper.Map<IEnumerable<UsersInListViewModel>>(users);
         }
     }
 }

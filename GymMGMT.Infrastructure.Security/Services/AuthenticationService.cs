@@ -28,7 +28,7 @@ namespace GymMGMT.Infrastructure.Security.Services
         {
             var user = await _userRepository.GetByEmailWithDetailsAsync(email);
 
-            if (user == null || BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 throw new UnauthorizedException("Invalid credentials. Please try again");
             }
@@ -79,6 +79,9 @@ namespace GymMGMT.Infrastructure.Security.Services
             if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
                 throw new BadRequestException("Invalid credentials", "Invalid credentials. Please try again.");
 
+            if (newPassword.Equals(oldPassword))
+                throw new ConflictException("The new password cannot be the same as the current password");
+
             user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
             await _userRepository.UpdateAsync(user);
         }
@@ -90,7 +93,7 @@ namespace GymMGMT.Infrastructure.Security.Services
             {
                 throw new NotFoundException(nameof(User), userId);
             }
-            if(!user.RoleId.Equals(userId))
+            if(!user.RoleId.Equals(newRoleId))
             {
                 user.RoleId = newRoleId;
                 await _userRepository.UpdateAsync(user);
@@ -112,8 +115,7 @@ namespace GymMGMT.Infrastructure.Security.Services
             var claims = new List<Claim>()
             {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.Name)
+            new Claim(ClaimTypes.Email, user.Email)
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

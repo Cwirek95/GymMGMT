@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using GymMGMT.Application.Contracts.Repositories;
+using GymMGMT.Application.Exceptions;
+using GymMGMT.Domain.Entities;
 using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Queries.GetUserDetail
@@ -18,6 +20,9 @@ namespace GymMGMT.Application.CQRS.Auth.Queries.GetUserDetail
         public async Task<UserDetailViewModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdWithDetailsAsync(request.Id);
+
+            if (user == null)
+                throw new NotFoundException(nameof(User), request.Id);
 
             return _mapper.Map<UserDetailViewModel>(user);
         }
