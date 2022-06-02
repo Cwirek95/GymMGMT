@@ -1,7 +1,6 @@
 ﻿using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangeRoleStatus;
 using GymMGMT.Application.CQRS.Auth.Commands.CreateRole;
-using GymMGMT.Application.CQRS.Auth.Commands.DeleteRole;
 using GymMGMT.Application.CQRS.Auth.Commands.UpdateRole;
 using GymMGMT.Domain.Entities;
 using GymMGMT.Persistence.EF;
@@ -99,7 +98,7 @@ namespace GymMGMT.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task ChangeStatus_ForValidModel_ReturnOkResponse()
+        public async Task ChangeStatus_ForValidModel_ReturnNoContentResponse()
         {
             // Arrange
             var role = new Role()
@@ -117,10 +116,68 @@ namespace GymMGMT.Api.Tests.Controllers
             var httpContent = model.ToJsonHttpContent();
 
             // Act
-            var response = await _httpClient.PutAsync("/api/admin/roles/changeStatus", httpContent);
+            var response = await _httpClient.PutAsync("/api/admin/roles/status", httpContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task Delete_ForValidModel_ReturnNoContentResponse()
+        {
+            // Arrange
+            var role = new Role()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Role1",
+                Status = true
+            };
+            SeedRole(role);
+
+            // Act
+            var response = await _httpClient.DeleteAsync("/api/admin/roles/" + role.Id);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task Delete_ForNonExistingRole_ReturnNotFoundResponse()
+        {
+            // Act
+            var response = await _httpClient.DeleteAsync("/api/admin/roles/" + Guid.NewGuid());
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task GetAll_WithQueryParameters_ReturnOkResponse()
+        {
+            // Act
+            var response = await _httpClient.GetAsync("/api/admin/roles");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task Detail_ForQueryParameters_ReturnOkResponse()
+        {
+            // Arrange
+            var role = new Role()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Role1",
+                Status = true
+            };
+            SeedRole(role);
+
+            // Act
+            var response = await _httpClient.GetAsync("/api/admin/roles/" + role.Id);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         private void SeedRole(Role role)

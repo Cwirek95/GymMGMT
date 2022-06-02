@@ -12,6 +12,7 @@ namespace GymMGMT.Api.Controllers.Admin
 {
     [Route("api/admin")]
     [ApiController]
+    [Authorize]
     public class RolesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -37,9 +38,13 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("[controller]/detail")]
-        public async Task<ActionResult<RoleDetailViewModel>> Detail([FromBody] GetRoleDetailQuery query)
+        [HttpGet("[controller]/{id}")]
+        public async Task<ActionResult<RoleDetailViewModel>> Detail(Guid id)
         {
+            var query = new GetRoleDetailQuery()
+            {
+                Id = id
+            };
             var response = await _mediator.Send(query);
 
             return Ok(response);
@@ -74,7 +79,7 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]/changeStatus", Name = "ChangeRoleStatus")]
+        [HttpPut("[controller]/status", Name = "ChangeRoleStatus")]
         public async Task<ActionResult> ChangeStatus([FromBody] ChangeRoleStatusCommand command)
         {
             await _mediator.Send(command);
@@ -86,9 +91,13 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpDelete("[controller]")]
-        public async Task<ActionResult> Delete([FromBody] DeleteRoleCommand command)
+        [HttpDelete("[controller]/{id}")]
+        public async Task<ActionResult> Delete(Guid id)
         {
+            var command = new DeleteRoleCommand()
+            {
+                Id = id
+            };
             await _mediator.Send(command);
 
             return NoContent();
