@@ -1,5 +1,4 @@
 ﻿using GymMGMT.Application.Models.Responses;
-using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Commands.SignInUser
 {

@@ -2,7 +2,6 @@
 using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.Exceptions;
 using GymMGMT.Domain.Entities;
-using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Queries.GetUserDetail
 {

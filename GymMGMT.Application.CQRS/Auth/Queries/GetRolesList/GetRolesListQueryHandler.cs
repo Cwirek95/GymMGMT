@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using GymMGMT.Application.Contracts.Repositories;
-using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Queries.GetRolesList
 {

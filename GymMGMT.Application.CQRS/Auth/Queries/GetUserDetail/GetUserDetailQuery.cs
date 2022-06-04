@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace GymMGMT.Application.CQRS.Auth.Queries.GetUserDetail
+﻿namespace GymMGMT.Application.CQRS.Auth.Queries.GetUserDetail
 {
     public class GetUserDetailQuery : IRequest<UserDetailViewModel>
     {

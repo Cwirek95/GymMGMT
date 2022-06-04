@@ -45,7 +45,7 @@ namespace GymMGMT.Infrastructure.Security.Services
             return response;
         }
 
-        public async Task<Guid> CreateUserAsync(string email, string password)
+        public async Task<User> CreateUserAsync(string email, string password)
         {
             var user = await _userRepository.GetByEmailWithDetailsAsync(email);
             if (user != null)
@@ -61,7 +61,7 @@ namespace GymMGMT.Infrastructure.Security.Services
 
             newUser = await _userRepository.AddAsync(newUser);
 
-            return newUser.Id;
+            return newUser;
         }
 
         public async Task<string> GetUserRoleAsync(Guid userId)

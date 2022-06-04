@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace GymMGMT.Application.CQRS.Auth.Commands.UpdateRole
+﻿namespace GymMGMT.Application.CQRS.Auth.Commands.UpdateRole
 {
     public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
     {

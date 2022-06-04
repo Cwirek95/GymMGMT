@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace GymMGMT.Application.CQRS.Auth.Commands.CreateUser
+﻿namespace GymMGMT.Application.CQRS.Auth.Commands.CreateUser
 {
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {

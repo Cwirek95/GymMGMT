@@ -71,7 +71,7 @@ namespace GymMGMT.Application.Tests.Mocks
                     };
                     users.Add(user);
 
-                    return user.Id;
+                    return user;
                 });
             mockAuthService.Setup(x => x.ChangeUserPasswordAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Callback(
                 (Guid userId, string oldPassword, string newPassword) =>

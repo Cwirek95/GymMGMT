@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace GymMGMT.Application.CQRS.Auth.Commands.ChangePassword
+﻿namespace GymMGMT.Application.CQRS.Auth.Commands.ChangePassword
 {
     public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
     {

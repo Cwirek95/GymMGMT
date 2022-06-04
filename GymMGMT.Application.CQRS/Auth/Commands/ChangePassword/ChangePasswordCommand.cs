@@ -1,5 +1,4 @@
 ﻿using GymMGMT.Application.Responses;
-using MediatR;
 
 namespace GymMGMT.Application.CQRS.Auth.Commands.ChangePassword
 {
