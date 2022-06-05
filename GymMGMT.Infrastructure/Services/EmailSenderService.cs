@@ -52,7 +52,6 @@ namespace GymMGMT.Infrastructure.Services
                 catch
                 {
                     throw new Exception("Sending error");
-                    //log an error message or throw an exception, or both.
                 }
                 finally
                 {

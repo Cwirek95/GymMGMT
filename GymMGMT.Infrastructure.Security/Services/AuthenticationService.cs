@@ -17,11 +17,13 @@ namespace GymMGMT.Infrastructure.Security.Services
     {
         private readonly JwtSettings _jwtSettings;
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public AuthenticationService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
+        public AuthenticationService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(string email, string password)
@@ -90,10 +92,13 @@ namespace GymMGMT.Infrastructure.Security.Services
         {
             var user = await _userRepository.GetByIdWithDetailsAsync(userId);
             if(user == null)
-            {
                 throw new NotFoundException(nameof(User), userId);
-            }
-            if(!user.RoleId.Equals(newRoleId))
+
+            var role = await _roleRepository.GetByIdAsync(newRoleId);
+            if(role == null)
+                throw new NotFoundException(nameof(Role), newRoleId);
+
+            if (!user.RoleId.Equals(newRoleId))
             {
                 user.RoleId = newRoleId;
                 await _userRepository.UpdateAsync(user);

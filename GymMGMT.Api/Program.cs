@@ -7,8 +7,18 @@ using GymMGMT.Infrastructure;
 using GymMGMT.Infrastructure.Security;
 using GymMGMT.Persistence.EF;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog
+var logger = new LoggerConfiguration()
+  .WriteTo.Map(evt => evt.Level, (level, wt) => wt.RollingFile("..\\logs\\" + level + "\\" + level + "-{Date}.log"))
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+builder.Services.AddSingleton(typeof(Serilog.ILogger), logger);
 
 // Add services to the container.
 builder.Services.AddApplicationServices();

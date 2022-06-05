@@ -2,5 +2,8 @@
 {
     public class UserDetailViewModel
     {
+        public string Email { get; set; }
+        public DateTimeOffset RegisteredAt { get; set; }
+        public bool Status { get; set; }
     }
 }
