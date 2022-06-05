@@ -8,5 +8,8 @@ namespace GymMGMT.Domain.Entities
         public string Name { get; set; }
         public int DurationInDays { get; set; }
         public bool Status { get; set; }
+
+
+        public IEnumerable<Membership> Memberships { get; set; }
     }
 }

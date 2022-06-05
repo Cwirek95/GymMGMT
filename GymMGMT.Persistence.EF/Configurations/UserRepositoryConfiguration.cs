@@ -25,7 +25,7 @@ namespace GymMGMT.Persistence.EF.Configurations
 
             builder.HasOne<Role>(u => u.Role)
                 .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId).OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(u => u.RoleId).OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
         }
     }
