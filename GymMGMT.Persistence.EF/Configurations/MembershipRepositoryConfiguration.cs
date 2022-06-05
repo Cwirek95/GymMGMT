@@ -18,6 +18,8 @@ namespace GymMGMT.Persistence.EF.Configurations
             builder.Property(x => x.EndDate)
                 .IsRequired()
                 .HasPrecision(0);
+            builder.Property(x => x.Price)
+                .IsRequired();
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasDefaultValue(true);

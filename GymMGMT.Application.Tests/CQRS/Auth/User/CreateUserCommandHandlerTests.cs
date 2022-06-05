@@ -26,7 +26,7 @@ namespace GymMGMT.Application.Tests.CQRS.Auth.User
             var handler = new CreateUserCommandHandler(_authenticationServiceMock.Object, _mediatorMock.Object);
             var command = new CreateUserCommand()
             {
-                Email = "email@gym.com",
+                Email = "email1@gym.com",
                 Password = "12345678"
             };
 
@@ -45,7 +45,7 @@ namespace GymMGMT.Application.Tests.CQRS.Auth.User
             var countBefore = (await _userRepositoryMock.Object.GetAllAsync()).Count;
             var command = new CreateUserCommand()
             {
-                Email = "email@gym.com",
+                Email = "email2@gym.com",
                 Password = "12345678"
             };
 

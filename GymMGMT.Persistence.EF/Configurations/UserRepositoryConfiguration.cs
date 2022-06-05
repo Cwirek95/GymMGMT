@@ -21,6 +21,8 @@ namespace GymMGMT.Persistence.EF.Configurations
             builder.Property(x => x.RegisteredAt)
                 .IsRequired()
                 .HasPrecision(0);
+            builder.Property(x => x.MemberId)
+                .IsRequired(false);
 
 
             builder.HasOne<Role>(u => u.Role)

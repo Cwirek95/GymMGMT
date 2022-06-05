@@ -6,6 +6,7 @@ namespace GymMGMT.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public double DefaultPrice { get; set; }
         public int DurationInDays { get; set; }
         public bool Status { get; set; }
 
