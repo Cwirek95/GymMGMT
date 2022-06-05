@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Api", "GymMGMT.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Api.Tests", "GymMGMT.Api.Tests\GymMGMT.Api.Tests.csproj", "{99C654A1-7FB5-4117-ACC7-4C827C9F0051}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMGMT.Infrastructure", "GymMGMT.Infrastructure\GymMGMT.Infrastructure.csproj", "{59555E9D-86F0-4DE0-8324-5FCB64C5B989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymMGMT.Infrastructure", "GymMGMT.Infrastructure\GymMGMT.Infrastructure.csproj", "{59555E9D-86F0-4DE0-8324-5FCB64C5B989}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

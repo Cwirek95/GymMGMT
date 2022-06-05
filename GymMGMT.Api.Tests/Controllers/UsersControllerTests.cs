@@ -94,10 +94,18 @@ namespace GymMGMT.Api.Tests.Controllers
             };
             SeedUser(user);
 
+            var role = new Role()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Role1",
+                Status = true
+            };
+            SeedRole(role);
+
             var model = new ChangeUserRoleCommand()
             {
                 UserId = user.Id,
-                RoleId= Guid.NewGuid(),
+                RoleId= role.Id
             };
             var httpContent = model.ToJsonHttpContent();
 
@@ -193,6 +201,16 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedRole(Role role)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Roles.Add(role);
             _dbContext.SaveChanges();
         }
     }
