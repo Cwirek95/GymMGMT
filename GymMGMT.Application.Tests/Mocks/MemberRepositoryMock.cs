@@ -54,7 +54,7 @@ namespace GymMGMT.Application.Tests.Mocks
 
             return mockMemberRepository;
         }
-            private static List<Member> GetMembers()
+        private static List<Member> GetMembers()
         {
             Fixture fixture = new Fixture();
             var members = fixture.Build<Member>().Without(x => x.User).Without(x => x.Membership).CreateMany(10).ToList();

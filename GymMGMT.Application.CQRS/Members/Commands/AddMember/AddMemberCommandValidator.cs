@@ -9,13 +9,13 @@
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")
                 .MaximumLength(256)
-                .WithMessage("{PropertyName} must not exceed 128 characters");
+                .WithMessage("{PropertyName} must not exceed 256 characters");
             RuleFor(x => x.LastName)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")
                 .MaximumLength(256)
-                .WithMessage("{PropertyName} must not exceed 128 characters");
+                .WithMessage("{PropertyName} must not exceed 256 characters");
             RuleFor(x => x.DateOfBirth)
                 .NotNull()
                 .NotEmpty()

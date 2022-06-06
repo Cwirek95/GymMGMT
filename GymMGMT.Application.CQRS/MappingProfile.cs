@@ -7,6 +7,7 @@ using GymMGMT.Application.CQRS.Auth.Queries.GetUsersList;
 using GymMGMT.Application.CQRS.Members.Commands.AddMember;
 using GymMGMT.Application.CQRS.Members.Queries.GetMemberDetail;
 using GymMGMT.Application.CQRS.Members.Queries.GetMembersList;
+using GymMGMT.Application.CQRS.MembershipTypes.Commands.CreateMembershipType;
 using GymMGMT.Domain.Entities;
 
 namespace GymMGMT.Application.CQRS
@@ -43,6 +44,10 @@ namespace GymMGMT.Application.CQRS
                     dest => dest.MembershipTypeName,
                     opt => opt.MapFrom(src => src.MembershipType.Name)
                 );
+            #endregion
+
+            #region MembershipType
+            CreateMap<CreateMembershipTypeCommand, MembershipType>();
             #endregion
         }
     }

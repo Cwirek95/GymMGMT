@@ -1,9 +1,4 @@
 ﻿using GymMGMT.Application.CQRS.Members.Commands.AddMember;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GymMGMT.Application.Tests.CQRS.Members
 {

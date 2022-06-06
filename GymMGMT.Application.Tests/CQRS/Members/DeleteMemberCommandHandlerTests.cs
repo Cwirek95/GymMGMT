@@ -1,11 +1,6 @@
 ﻿using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.CQRS.Members.Commands.DeleteMember;
 using GymMGMT.Application.Tests.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GymMGMT.Application.Tests.CQRS.Members
 {
@@ -37,7 +32,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
         }
 
         [Fact()]
-        public async Task Handle_ForValidCommand_ReturnOneLessMembers()
+        public async Task Handle_MemberDeleted_ReturnOneLessMembers()
         {
             // Arrange
             var items = await _memberRepositoryMock.Object.GetAllAsync();
