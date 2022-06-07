@@ -26,7 +26,7 @@
                 .WithMessage("{PropertyName} is required")
                 .MaximumLength(256)
                 .WithMessage("{PropertyName} must not exceed 15 characters")
-                .Matches(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$")
+                .Matches(@"^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[456789]\d{9}|(\d[ -]?){10}\d$")
                 .WithMessage("Wrong phone number format");
             RuleFor(x => x.UserId)
                 .NotNull()

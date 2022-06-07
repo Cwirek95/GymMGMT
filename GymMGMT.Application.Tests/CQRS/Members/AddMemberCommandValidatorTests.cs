@@ -55,7 +55,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
             var validator = new AddMemberCommandValidator();
             var command = new AddMemberCommand()
             {
-                FirstName = new string('A', 129),
+                FirstName = new string('A', 257),
                 LastName = "LName",
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "+48123456789",

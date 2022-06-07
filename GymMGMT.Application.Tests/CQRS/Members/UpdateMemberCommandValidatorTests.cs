@@ -93,7 +93,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
             var command = new UpdateMemberCommand()
             {
                 Id = items.First().Id,
-                FirstName = new string('A', 129),
+                FirstName = new string('A', 257),
                 LastName = "LName",
                 DateOfBirth = DateTimeOffset.Now.AddYears(-10),
                 PhoneNumber = "+48123456987",
@@ -116,7 +116,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
             {
                 Id = items.First().Id,
                 FirstName = "FName",
-                LastName = new string('A', 129),
+                LastName = new string('A', 257),
                 DateOfBirth = DateTimeOffset.Now.AddYears(-10),
                 PhoneNumber = "+48123456987",
             };
