@@ -66,7 +66,7 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]/{id}")]
+        [HttpPut("[controller]")]
         public async Task<ActionResult> Update([FromBody] UpdateMemberCommand command)
         {
             await _mediator.Send(command);

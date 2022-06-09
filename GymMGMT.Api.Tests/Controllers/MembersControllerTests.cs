@@ -8,15 +8,43 @@ using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
 {
-    public class MembersControllerTests : IClassFixture<ApiTestsServices>
+    public class MembersControllerTests : IDisposable, IClassFixture<ApiTestsServices>
     {
         private readonly ApiTestsServices _services;
         private readonly HttpClient _httpClient;
+        private readonly MembershipType _membershipType;
+        private readonly User _user;
 
         public MembersControllerTests(ApiTestsServices services)
         {
             _services = services;
             _httpClient = _services.CreateClient();
+
+            _membershipType = new MembershipType()
+            {
+                Id = new Random().Next(),
+                Name = "MType1",
+                DurationInDays = 30,
+                DefaultPrice = 39.99,
+                Status = true,
+            };
+            SeedMembershipType(_membershipType);
+
+            _user = new User()
+            {
+                Id = Guid.NewGuid(),
+                Email = "email@email.com",
+                Password = BCrypt.Net.BCrypt.HashPassword("12345"),
+                RegisteredAt = DateTimeOffset.Now,
+                Status = true,
+            };
+            SeedUser(_user);
+        }
+
+        public void Dispose()
+        {
+            RemoveMembershipType(_membershipType);
+            RemoveUser(_user);
         }
 
         [Fact]
@@ -59,12 +87,13 @@ namespace GymMGMT.Api.Tests.Controllers
             // Arrange
             var model = new AddMemberCommand()
             {
-                FirstName = "FName1",
-                LastName = "LName1",
-                DateOfBirth = DateTimeOffset.Now.AddYears(-23),
+                FirstName = "FirstName1",
+                LastName = "LastName1",
+                DateOfBirth = DateTimeOffset.Now.AddYears(-25),
                 PhoneNumber = "+48123456789",
-                UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(),
+                Price = 99,
+                MembershipTypeId = _membershipType.Id,
+                UserId = _user.Id
             };
             var httpContent = model.ToJsonHttpContent();
 
@@ -85,8 +114,9 @@ namespace GymMGMT.Api.Tests.Controllers
                 LastName = "",
                 DateOfBirth = DateTimeOffset.Now.AddYears(-23),
                 PhoneNumber = "+48123456789",
-                UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(),
+                Price = 99.99,
+                MembershipTypeId = _membershipType.Id,
+                UserId = _user.Id
             };
             var httpContent = model.ToJsonHttpContent();
 
@@ -240,6 +270,46 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.Members.Add(member);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedMembershipType(MembershipType membershipType)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.MembershipTypes.Add(membershipType);
+            _dbContext.SaveChanges();
+        }
+
+        private void RemoveMembershipType(MembershipType membershipType)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.MembershipTypes.Remove(membershipType);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedUser(User user)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+        }
+
+        private void RemoveUser(User user)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
         }
     }

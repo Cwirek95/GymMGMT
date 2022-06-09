@@ -14,7 +14,7 @@ namespace GymMGMT.Domain.Entities
 
         public Guid UserId { get; set; }
         public User User { get; set; }
-        public int MembershipId { get; set; }
+        public int? MembershipId { get; set; }
         public Membership Membership { get; set; }
     }
 }

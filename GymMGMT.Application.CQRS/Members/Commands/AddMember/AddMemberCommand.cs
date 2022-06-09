@@ -9,6 +9,7 @@ namespace GymMGMT.Application.CQRS.Members.Commands.AddMember
         public DateTimeOffset DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public Guid UserId { get; set; }
-        public int MembershipId { get; set; }
+        public int MembershipTypeId { get; set; }
+        public double? Price { get; set; }
     }
-}
+} 

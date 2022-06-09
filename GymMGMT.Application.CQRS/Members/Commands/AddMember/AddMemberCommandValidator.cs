@@ -32,7 +32,7 @@
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required");
-            RuleFor(x => x.MembershipId)
+            RuleFor(x => x.MembershipTypeId)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required");

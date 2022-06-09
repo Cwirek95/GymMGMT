@@ -7,6 +7,7 @@ using GymMGMT.Application.CQRS.Auth.Queries.GetUsersList;
 using GymMGMT.Application.CQRS.Members.Commands.AddMember;
 using GymMGMT.Application.CQRS.Members.Queries.GetMemberDetail;
 using GymMGMT.Application.CQRS.Members.Queries.GetMembersList;
+using GymMGMT.Application.CQRS.Memberships.Commands.AddMembership;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.CreateMembershipType;
 using GymMGMT.Application.CQRS.MembershipTypes.Queries.GetMembershipTypeDetail;
 using GymMGMT.Application.CQRS.MembershipTypes.Queries.GetMembershipTypesList;
@@ -31,6 +32,9 @@ namespace GymMGMT.Application.CQRS
 
             #region Member
             CreateMap<AddMemberCommand, Member>();
+            CreateMap<Member, AddMemberCommand>()
+                .ForMember(x => x.MembershipTypeId, opt => opt.Ignore())
+                .ForMember(x => x.Price, opt => opt.Ignore());
             CreateMap<MembersInListViewModel, Member>();
             CreateMap<Member, MembersInListViewModel>()
                 .ForMember(
@@ -41,6 +45,7 @@ namespace GymMGMT.Application.CQRS
             #endregion
 
             #region Membership
+            CreateMap<AddMembershipCommand, Membership>().ReverseMap();
             CreateMap<Membership, MembershipDto>()
                 .ForMember(
                     dest => dest.MembershipTypeName,

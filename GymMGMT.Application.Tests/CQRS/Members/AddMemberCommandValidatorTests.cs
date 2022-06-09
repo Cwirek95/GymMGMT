@@ -16,7 +16,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "+48123456789",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
@@ -38,7 +38,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "+48123456789",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
@@ -60,7 +60,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "+48123456789",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
@@ -82,7 +82,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
@@ -104,7 +104,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = new String('A', 16),
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
@@ -126,7 +126,7 @@ namespace GymMGMT.Application.Tests.CQRS.Members
                 DateOfBirth = DateTimeOffset.Now.AddYears(-20),
                 PhoneNumber = "+48la99328a",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(0, 100)
+                Price = 99.99
             };
 
             // Act
