@@ -61,6 +61,18 @@ namespace GymMGMT.Api.Tests.Controllers
         public async Task Detail_ForQueryParameters_ReturnOkResponse()
         {
             // Arrange
+            var membership = new Membership()
+            {
+                Id = new Random().Next(),
+                StartDate = DateTimeOffset.Now,
+                LastExtension = DateTimeOffset.Now,
+                EndDate = DateTimeOffset.Now,
+                Price = 99.19,
+                MembershipTypeId = _membershipType.Id,
+                Status = true
+            };
+            SeedMembership(membership);
+
             var member = new Member()
             {
                 Id = new Random().Next(),
@@ -68,8 +80,8 @@ namespace GymMGMT.Api.Tests.Controllers
                 LastName = "LName",
                 DateOfBirth = DateTimeOffset.Now.AddYears(-23),
                 PhoneNumber = "+4812343548",
-                UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(),
+                UserId = _user.Id,
+                MembershipId = membership.Id,
                 Status = true
             };
             SeedMember(member);
@@ -202,7 +214,7 @@ namespace GymMGMT.Api.Tests.Controllers
             var httpContent = model.ToJsonHttpContent();
 
             // Act
-            var response = await _httpClient.PutAsync("/api/admin/members/" + member.Id, httpContent);
+            var response = await _httpClient.PutAsync("/api/admin/members", httpContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -223,7 +235,7 @@ namespace GymMGMT.Api.Tests.Controllers
             var httpContent = model.ToJsonHttpContent();
 
             // Act
-            var response = await _httpClient.PutAsync("/api/admin/members/" + new Random().Next(), httpContent);
+            var response = await _httpClient.PutAsync("/api/admin/members", httpContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -290,6 +302,16 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.MembershipTypes.Remove(membershipType);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedMembership(Membership membership)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Memberships.Add(membership);
             _dbContext.SaveChanges();
         }
 

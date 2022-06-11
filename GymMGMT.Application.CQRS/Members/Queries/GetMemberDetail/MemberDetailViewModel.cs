@@ -7,7 +7,6 @@
         public DateTimeOffset DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public MembershipDto Membership { get; set; }
-        public int MembershipId { get; set; }
         public bool Status { get; set; }
     }
 }
