@@ -28,6 +28,10 @@ namespace GymMGMT.Persistence.EF.Configurations
                 .HasPrecision(0);
             builder.Property(x => x.LastModifiedBy)
                 .IsRequired(false);
+
+            builder.HasMany<Membership>(mt => mt.Memberships)
+                .WithOne(ms => ms.MembershipType)
+                .HasForeignKey(ms => ms.MembershipTypeId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

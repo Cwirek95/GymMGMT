@@ -37,7 +37,7 @@ namespace GymMGMT.Application.CQRS.Memberships.Commands.AddMembership
             membership.StartDate = DateTimeOffset.Now;
             membership.LastExtension = DateTimeOffset.Now;
             membership.EndDate = DateTimeOffset.Now.AddDays(membershipType.DurationInDays);
-            if(request.Price == null || request.Price == 0)
+            if(request.Price == null || request.Price <= 0)
                 membership.Price = membershipType.DefaultPrice;
 
             membership = await _membershipRepository.AddAsync(membership);
