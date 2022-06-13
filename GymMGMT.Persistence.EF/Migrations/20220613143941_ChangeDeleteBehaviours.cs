@@ -4,7 +4,7 @@
 
 namespace GymMGMT.Persistence.EF.Migrations
 {
-    public partial class ChangeBehaviours : Migration
+    public partial class ChangeDeleteBehaviours : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,26 @@ namespace GymMGMT.Persistence.EF.Migrations
                 table: "Members");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Users_Members_MemberId",
+                table: "Users");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Users_Roles_RoleId",
                 table: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Users_MemberId",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "MemberId",
+                table: "Users");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Members_UserId",
+                table: "Members",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Members_Memberships_MembershipId",
@@ -23,6 +41,14 @@ namespace GymMGMT.Persistence.EF.Migrations
                 principalTable: "Memberships",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.SetNull);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Members_Users_UserId",
+                table: "Members",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Users_Roles_RoleId",
@@ -40,8 +66,29 @@ namespace GymMGMT.Persistence.EF.Migrations
                 table: "Members");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Members_Users_UserId",
+                table: "Members");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Users_Roles_RoleId",
                 table: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Members_UserId",
+                table: "Members");
+
+            migrationBuilder.AddColumn<int>(
+                name: "MemberId",
+                table: "Users",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_MemberId",
+                table: "Users",
+                column: "MemberId",
+                unique: true,
+                filter: "[MemberId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Members_Memberships_MembershipId",
@@ -49,6 +96,14 @@ namespace GymMGMT.Persistence.EF.Migrations
                 column: "MembershipId",
                 principalTable: "Memberships",
                 principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Users_Members_MemberId",
+                table: "Users",
+                column: "MemberId",
+                principalTable: "Members",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Users_Roles_RoleId",

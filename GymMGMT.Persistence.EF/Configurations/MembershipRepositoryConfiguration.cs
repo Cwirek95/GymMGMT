@@ -36,7 +36,7 @@ namespace GymMGMT.Persistence.EF.Configurations
 
             builder.HasOne<Member>(ms => ms.Member)
                 .WithOne(m => m.Membership)
-                .HasForeignKey<Member>(m => m.MembershipId).OnDelete(DeleteBehavior.SetNull)
+                .HasForeignKey<Member>(m => m.MembershipId)
                 .IsRequired(false);
         }
     }

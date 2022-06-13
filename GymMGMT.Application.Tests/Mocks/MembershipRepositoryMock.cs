@@ -13,6 +13,7 @@ namespace GymMGMT.Application.Tests.Mocks
 
             mockMembershipRepository.Setup(x => x.GetAllAsync()).ReturnsAsync(memberships);
             mockMembershipRepository.Setup(x => x.GetAllWithDetailsAsync()).ReturnsAsync(memberships);
+            mockMembershipRepository.Setup(x => x.GetAllByMembershipTypeIdWithDetailsAsync(It.IsAny<int>())).ReturnsAsync(memberships);
             mockMembershipRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(
                 (int id) =>
                 {
@@ -24,6 +25,13 @@ namespace GymMGMT.Application.Tests.Mocks
                 (int id) =>
                 {
                     var membership = memberships.FirstOrDefault(x => x.Id == id);
+
+                    return membership;
+                });
+            mockMembershipRepository.Setup(x => x.GetByMemberIdWithDetailsAsync(It.IsAny<int>())).ReturnsAsync(
+                (int memberId) =>
+                {
+                    var membership = memberships.FirstOrDefault(x => x.MemberId == memberId);
 
                     return membership;
                 });

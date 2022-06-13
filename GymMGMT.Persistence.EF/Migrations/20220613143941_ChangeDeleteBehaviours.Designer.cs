@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymMGMT.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220612130026_ChangeBehaviours")]
-    partial class ChangeBehaviours
+    [Migration("20220613143941_ChangeDeleteBehaviours")]
+    partial class ChangeDeleteBehaviours
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,9 @@ namespace GymMGMT.Persistence.EF.Migrations
                     b.HasIndex("MembershipId")
                         .IsUnique()
                         .HasFilter("[MembershipId] IS NOT NULL");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Members");
                 });
@@ -215,9 +218,6 @@ namespace GymMGMT.Persistence.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(1024)
@@ -237,10 +237,6 @@ namespace GymMGMT.Persistence.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId")
-                        .IsUnique()
-                        .HasFilter("[MemberId] IS NOT NULL");
-
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
@@ -253,7 +249,15 @@ namespace GymMGMT.Persistence.EF.Migrations
                         .HasForeignKey("GymMGMT.Domain.Entities.Member", "MembershipId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("GymMGMT.Domain.Entities.User", "User")
+                        .WithOne("Member")
+                        .HasForeignKey("GymMGMT.Domain.Entities.Member", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Membership");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GymMGMT.Domain.Entities.Membership", b =>
@@ -269,25 +273,12 @@ namespace GymMGMT.Persistence.EF.Migrations
 
             modelBuilder.Entity("GymMGMT.Domain.Entities.User", b =>
                 {
-                    b.HasOne("GymMGMT.Domain.Entities.Member", "Member")
-                        .WithOne("User")
-                        .HasForeignKey("GymMGMT.Domain.Entities.User", "MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GymMGMT.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Member");
-
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("GymMGMT.Domain.Entities.Member", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("GymMGMT.Domain.Entities.Membership", b =>
@@ -304,6 +295,12 @@ namespace GymMGMT.Persistence.EF.Migrations
             modelBuilder.Entity("GymMGMT.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("GymMGMT.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Member")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -52,6 +52,15 @@ namespace GymMGMT.Persistence.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateListAsync(IEnumerable<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);

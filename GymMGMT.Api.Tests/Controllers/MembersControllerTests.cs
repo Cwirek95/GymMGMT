@@ -245,6 +245,18 @@ namespace GymMGMT.Api.Tests.Controllers
         public async Task Delete_ForValidModel_ReturnNoContentResponse()
         {
             // Arrange
+            var membership = new Membership()
+            {
+                Id = new Random().Next(),
+                StartDate = DateTimeOffset.Now,
+                LastExtension = DateTimeOffset.Now,
+                EndDate = DateTimeOffset.Now,
+                Price = 99.19,
+                MembershipTypeId = _membershipType.Id,
+                Status = true
+            };
+            SeedMembership(membership);
+
             var member = new Member()
             {
                 Id = new Random().Next(),
@@ -253,7 +265,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DateOfBirth = DateTimeOffset.Now.AddYears(-23),
                 PhoneNumber = "+4812343548",
                 UserId = Guid.NewGuid(),
-                MembershipId = new Random().Next(),
+                MembershipId = membership.Id,
                 Status = true
             };
             SeedMember(member);
