@@ -1,6 +1,8 @@
 ﻿using GymMGMT.Api.Tests.Helpers;
+using GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeDefaultPrice;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeMembershipTypeStatus;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.CreateMembershipType;
+using GymMGMT.Application.CQRS.MembershipTypes.Commands.UpdateMembershipType;
 using GymMGMT.Domain.Entities;
 using GymMGMT.Persistence.EF;
 using System.Net;
@@ -88,6 +90,52 @@ namespace GymMGMT.Api.Tests.Controllers
         }
 
         [Fact]
+        public async Task Update_ForValidModel_ReturnNoContentResponse()
+        {
+            // Arrange
+            var membershipType = new MembershipType()
+            {
+                Id = new Random().Next(),
+                Name = "MType",
+                DefaultPrice = 99.12,
+                DurationInDays = 20,
+                Status = true
+            };
+            SeedMembershipType(membershipType);
+
+            var model = new UpdateMembershipTypeCommand()
+            {
+                Id = membershipType.Id,
+                Name = "UpdatedName",
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/membershiptypes", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task Update_ForNonExistingMembershipType_ReturnNotFoundResponse()
+        {
+            // Arrange
+            var model = new UpdateMembershipTypeCommand()
+            {
+                Id = new Random().Next(),
+                Name = "UpdatedName",
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/membershiptypes", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async Task ChangeStatus_ForValidModel_ReturnNoContentResponse()
         {
             // Arrange
@@ -126,6 +174,52 @@ namespace GymMGMT.Api.Tests.Controllers
 
             // Act
             var response = await _httpClient.PutAsync("/api/admin/membershiptypes/status", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task ChangePrice_ForValidModel_ReturnNoContentResponse()
+        {
+            // Arrange
+            var membershipType = new MembershipType()
+            {
+                Id = new Random().Next(),
+                Name = "MType",
+                DefaultPrice = 99.12,
+                DurationInDays = 20,
+                Status = true
+            };
+            SeedMembershipType(membershipType);
+
+            var model = new ChangeDefaultPriceCommand()
+            {
+                Id = membershipType.Id,
+                DefaultPrice = 50
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/membershiptypes/price", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task ChangePrice_ForNonExistingMembershipType_ReturnNotFoundResponse()
+        {
+            // Arrange
+            var model = new ChangeDefaultPriceCommand()
+            {
+                Id = new Random().Next(),
+                DefaultPrice = 50
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/membershiptypes/price", httpContent);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);

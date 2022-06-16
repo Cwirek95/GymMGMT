@@ -1,8 +1,10 @@
-﻿using GymMGMT.Api.Tests.Fakes;
+﻿using GymMGMT.Api.Services;
+using GymMGMT.Api.Tests.Fakes;
 using GymMGMT.Persistence.EF;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 namespace GymMGMT.Api.Tests
 {

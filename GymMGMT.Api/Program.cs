@@ -7,8 +7,8 @@ using GymMGMT.Infrastructure;
 using GymMGMT.Infrastructure.Security;
 using GymMGMT.Persistence.EF;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +19,25 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 builder.Services.AddSingleton(typeof(Serilog.ILogger), logger);
+
+// Quartz
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionJobFactory();
+
+    var membershipValidityJobKey = new JobKey("MembershipValidity");
+    q.AddJob<CheckMembershipValidityService>(opts => opts.WithIdentity(membershipValidityJobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(membershipValidityJobKey)
+        .WithIdentity("MembershipValidity-trigger")
+        .WithSimpleSchedule(x => x
+            .WithIntervalInHours(1)
+            .RepeatForever()));
+});
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    builder.Services.AddQuartzServer(q => q.WaitForJobsToComplete = true);
+}
 
 // Add services to the container.
 builder.Services.AddApplicationServices();

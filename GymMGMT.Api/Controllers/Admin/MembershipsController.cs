@@ -1,10 +1,12 @@
-﻿using GymMGMT.Application.CQRS.Members.Commands.AddMember;
-using GymMGMT.Application.CQRS.Members.Commands.ChangeMemberStatus;
-using GymMGMT.Application.CQRS.Members.Commands.DeleteMember;
-using GymMGMT.Application.CQRS.Members.Commands.SetMembershipToMember;
-using GymMGMT.Application.CQRS.Members.Commands.UpdateMember;
-using GymMGMT.Application.CQRS.Members.Queries.GetMemberDetail;
-using GymMGMT.Application.CQRS.Members.Queries.GetMembersList;
+﻿using GymMGMT.Application.CQRS.Memberships.Commands.AddMembership;
+using GymMGMT.Application.CQRS.Memberships.Commands.ChangeMembershipPrice;
+using GymMGMT.Application.CQRS.Memberships.Commands.ChangeMembershipStatus;
+using GymMGMT.Application.CQRS.Memberships.Commands.ChangeMembershipType;
+using GymMGMT.Application.CQRS.Memberships.Commands.DeleteMembership;
+using GymMGMT.Application.CQRS.Memberships.Commands.ExtendMembership;
+using GymMGMT.Application.CQRS.Memberships.Commands.SetDefaultPriceForCurrentMembers;
+using GymMGMT.Application.CQRS.Memberships.Queries.GetMembershipDetail;
+using GymMGMT.Application.CQRS.Memberships.Queries.GetMembershipsList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,11 @@ namespace GymMGMT.Api.Controllers.Admin
     [Route("api/admin")]
     [ApiController]
     [Authorize]
-    public class MembersController : ControllerBase
+    public class MembershipsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public MembersController(IMediator mediator)
+        public MembershipsController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -28,9 +30,9 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("[controller]")]
-        public async Task<ActionResult<MembersInListViewModel>> GetAll()
+        public async Task<ActionResult<MembershipsInListViewModel>> GetAll()
         {
-            var response = await _mediator.Send(new GetMembersListQuery());
+            var response = await _mediator.Send(new GetMembershipsListQuery());
 
             return Ok(response);
         }
@@ -40,9 +42,9 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("[controller]/{id}")]
-        public async Task<ActionResult<MemberDetailViewModel>> Detail(int id)
+        public async Task<ActionResult<MembershipDetailViewModel>> Detail(int id)
         {
-            var query = new GetMemberDetailQuery()
+            var query = new GetMembershipDetailQuery()
             {
                 Id = id
             };
@@ -56,7 +58,7 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPost("[controller]")]
-        public async Task<ActionResult<Guid>> Create([FromBody] AddMemberCommand command)
+        public async Task<ActionResult<int>> Create([FromBody] AddMembershipCommand command)
         {
             var response = await _mediator.Send(command);
 
@@ -67,8 +69,8 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]")]
-        public async Task<ActionResult> Update([FromBody] UpdateMemberCommand command)
+        [HttpPut("[controller]/status", Name = "ChangeMembershipStatus")]
+        public async Task<ActionResult> ChangeType([FromBody] ChangeMembershipStatusCommand command)
         {
             await _mediator.Send(command);
 
@@ -79,8 +81,8 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]/status", Name = "ChangeMemberStatus")]
-        public async Task<ActionResult> ChangeStatus([FromBody] ChangeMemberStatusCommand command)
+        [HttpPut("[controller]/type", Name = "ChangeMembershipType")]
+        public async Task<ActionResult> ChangeType([FromBody] ChangeMembershipTypeCommand command)
         {
             await _mediator.Send(command);
 
@@ -91,8 +93,32 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("[controller]/membership", Name = "SetMembershipToMember")]
-        public async Task<ActionResult> SetMembership([FromBody] SetMembershipToMemberCommand command)
+        [HttpPut("[controller]/price", Name = "ChangeMembershipPrice")]
+        public async Task<ActionResult> ChangePrice([FromBody] ChangeMembershipPriceCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("[controller]/default-price", Name = "SetDefaultPrice")]
+        public async Task<ActionResult> SetDefaultPrice([FromBody] SetDefaultPriceForCurrentMembersCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("[controller]/extend", Name = "ExtendMembership")]
+        public async Task<ActionResult> Extend([FromBody] ExtendMembershipCommand command)
         {
             await _mediator.Send(command);
 
@@ -106,7 +132,7 @@ namespace GymMGMT.Api.Controllers.Admin
         [HttpDelete("[controller]/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var command = new DeleteMemberCommand()
+            var command = new DeleteMembershipCommand()
             {
                 Id = id
             };

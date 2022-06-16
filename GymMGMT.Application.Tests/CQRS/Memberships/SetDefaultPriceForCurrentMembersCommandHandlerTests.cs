@@ -1,5 +1,5 @@
 ﻿using GymMGMT.Application.Contracts.Repositories;
-using GymMGMT.Application.CQRS.Memberships.Commands.SetDefaultPriceForCurrentMember;
+using GymMGMT.Application.CQRS.Memberships.Commands.SetDefaultPriceForCurrentMembers;
 using GymMGMT.Application.Tests.Mocks;
 
 namespace GymMGMT.Application.Tests.CQRS.Memberships
@@ -26,7 +26,7 @@ namespace GymMGMT.Application.Tests.CQRS.Memberships
                 membership.MembershipType = membershipTypes.ToList().ElementAt(1);
                 membership.MembershipTypeId = membershipTypes.ToList().ElementAt(1).Id;
             }
-            var handler = new SetDefaultPriceForCurrentMembersCommandHandler(_membershipRepositoryMock.Object);
+            var handler = new SetDefaultPriceForCurrentMembersCommandHandler(_membershipRepositoryMock.Object, _membershipTypeRepositoryMock.Object);
             var command = new SetDefaultPriceForCurrentMembersCommand()
             {
                 MembershipTypeId = membershipTypes.ToList().ElementAt(1).Id
@@ -51,7 +51,7 @@ namespace GymMGMT.Application.Tests.CQRS.Memberships
                 membership.MembershipType = membershipTypes.ToList().ElementAt(1);
                 membership.MembershipTypeId = membershipTypes.ToList().ElementAt(1).Id;
             }
-            var handler = new SetDefaultPriceForCurrentMembersCommandHandler(_membershipRepositoryMock.Object);
+            var handler = new SetDefaultPriceForCurrentMembersCommandHandler(_membershipRepositoryMock.Object, _membershipTypeRepositoryMock.Object);
             var command = new SetDefaultPriceForCurrentMembersCommand()
             {
                 MembershipTypeId = membershipTypes.ToList().ElementAt(1).Id

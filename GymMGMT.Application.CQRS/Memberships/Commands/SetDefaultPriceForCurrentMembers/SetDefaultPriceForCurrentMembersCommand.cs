@@ -1,6 +1,6 @@
 ﻿using GymMGMT.Application.Responses;
 
-namespace GymMGMT.Application.CQRS.Memberships.Commands.SetDefaultPriceForCurrentMember
+namespace GymMGMT.Application.CQRS.Memberships.Commands.SetDefaultPriceForCurrentMembers
 {
     public class SetDefaultPriceForCurrentMembersCommand : IRequest<ICommandResponse>
     {
