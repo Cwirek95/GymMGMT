@@ -14,5 +14,6 @@ namespace GymMGMT.Domain.Entities
         public Guid? RoleId { get; set; }
         public Role Role { get; set; }
         public Member Member { get; set; }
+        public Trainer Trainer { get; set; }
     }
 }

@@ -20,6 +20,8 @@ namespace GymMGMT.Persistence.EF
         public DbSet<Member> Members { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Training> Trainings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

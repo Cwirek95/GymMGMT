@@ -15,6 +15,7 @@ namespace GymMGMT.Persistence.EF.Repositories
             var members = await _context.Members
                 .Include(x => x.User)
                 .Include(x => x.Membership)
+                .Include(x => x.Trainings)
                 .ToListAsync();
 
             return members;
@@ -25,6 +26,7 @@ namespace GymMGMT.Persistence.EF.Repositories
             var member = await _context.Members
                 .Include(x => x.User)
                 .Include(x => x.Membership)
+                .Include(x => x.Trainings)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return member;

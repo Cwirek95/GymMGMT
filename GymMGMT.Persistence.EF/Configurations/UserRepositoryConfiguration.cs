@@ -31,6 +31,10 @@ namespace GymMGMT.Persistence.EF.Configurations
             builder.HasOne<Member>(u => u.Member)
                 .WithOne(m => m.User)
                 .HasForeignKey<Member>(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<Trainer>(u => u.Trainer)
+                .WithOne(m => m.User)
+                .HasForeignKey<Trainer>(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

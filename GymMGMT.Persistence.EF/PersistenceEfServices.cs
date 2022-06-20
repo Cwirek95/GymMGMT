@@ -20,6 +20,8 @@ namespace GymMGMT.Persistence.EF
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<IMembershipTypeRepository, MembershipTypeRepository>();
+            services.AddScoped<ITrainerRepository, TrainerRepository>();
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
 
             return services;
         }
