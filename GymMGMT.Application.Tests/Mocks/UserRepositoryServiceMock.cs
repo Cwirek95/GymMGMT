@@ -98,7 +98,11 @@ namespace GymMGMT.Application.Tests.Mocks
         private static List<User> GetUsers()
         {
             Fixture fixture = new Fixture();
-            var users = fixture.Build<User>().Without(x => x.Role).Without(x => x.Member).CreateMany(10).ToList();
+            var users = fixture.Build<User>()
+                .Without(x => x.Role)
+                .Without(x => x.Member)
+                .Without(x => x.Trainer)
+                .CreateMany(10).ToList();
 
             return users;
         }

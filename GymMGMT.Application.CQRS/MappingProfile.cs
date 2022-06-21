@@ -13,6 +13,9 @@ using GymMGMT.Application.CQRS.Memberships.Queries.GetMembershipsList;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.CreateMembershipType;
 using GymMGMT.Application.CQRS.MembershipTypes.Queries.GetMembershipTypeDetail;
 using GymMGMT.Application.CQRS.MembershipTypes.Queries.GetMembershipTypesList;
+using GymMGMT.Application.CQRS.Trainers.Commands.AddTrainer;
+using GymMGMT.Application.CQRS.Trainers.Queries.GetTrainerDetail;
+using GymMGMT.Application.CQRS.Trainers.Queries.GetTrainersList;
 using GymMGMT.Domain.Entities;
 
 namespace GymMGMT.Application.CQRS
@@ -63,9 +66,25 @@ namespace GymMGMT.Application.CQRS
             #endregion
 
             #region MembershipType
-            CreateMap<CreateMembershipTypeCommand, MembershipType>();
+            CreateMap<CreateMembershipTypeCommand, MembershipType>().ReverseMap();
             CreateMap<MembershipType, MembershipTypesInListViewModel>().ReverseMap();
             CreateMap<MembershipType, MembershipTypeDetailViewModel>().ReverseMap();
+            #endregion
+
+            #region Trainers
+            CreateMap<AddTrainerCommand, Trainer>().ReverseMap();
+            CreateMap<TrainersInListViewModel, Trainer>();
+            CreateMap<Trainer, TrainersInListViewModel>()
+                .ForMember(
+                    dest => dest.Email,
+                    opt => opt.MapFrom(src => src.User.Email)
+                );
+            CreateMap<TrainerDetailViewModel, Trainer>();
+            CreateMap<Trainer, TrainerDetailViewModel>()
+                .ForMember(
+                    dest => dest.Email,
+                    opt => opt.MapFrom(src => src.User.Email)
+                );
             #endregion
         }
     }
