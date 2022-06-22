@@ -16,6 +16,9 @@ using GymMGMT.Application.CQRS.MembershipTypes.Queries.GetMembershipTypesList;
 using GymMGMT.Application.CQRS.Trainers.Commands.AddTrainer;
 using GymMGMT.Application.CQRS.Trainers.Queries.GetTrainerDetail;
 using GymMGMT.Application.CQRS.Trainers.Queries.GetTrainersList;
+using GymMGMT.Application.CQRS.Trainings.Commands.AddTraining;
+using GymMGMT.Application.CQRS.Trainings.Queries.GetTrainingDetail;
+using GymMGMT.Application.CQRS.Trainings.Queries.GetTrainingsList;
 using GymMGMT.Domain.Entities;
 
 namespace GymMGMT.Application.CQRS
@@ -47,6 +50,7 @@ namespace GymMGMT.Application.CQRS
                     opt => opt.MapFrom(src => src.Membership.Status)
                 );
             CreateMap<Member, MemberDetailViewModel>().ReverseMap();
+            CreateMap<MemberDto, Member>().ReverseMap();
             #endregion
 
             #region Membership
@@ -84,6 +88,30 @@ namespace GymMGMT.Application.CQRS
                 .ForMember(
                     dest => dest.Email,
                     opt => opt.MapFrom(src => src.User.Email)
+                );
+            #endregion
+
+            #region Training
+            CreateMap<AddTrainingCommand, Training>().ReverseMap();
+            CreateMap<TrainingsInListViewModel, Training>();
+            CreateMap<Training, TrainingsInListViewModel>()
+                .ForMember(
+                    dest => dest.TrainerFirstName,
+                    opt => opt.MapFrom(src => src.Trainer.FirstName)
+                )
+                .ForMember(
+                    dest => dest.TrainerLastName,
+                    opt => opt.MapFrom(src => src.Trainer.LastName)
+                );
+            CreateMap<TrainingDetailViewModel, Training>();
+            CreateMap<Training, TrainingDetailViewModel>()
+                .ForMember(
+                    dest => dest.TrainerFirstName,
+                    opt => opt.MapFrom(src => src.Trainer.FirstName)
+                )
+                .ForMember(
+                    dest => dest.TrainerLastName,
+                    opt => opt.MapFrom(src => src.Trainer.LastName)
                 );
             #endregion
         }

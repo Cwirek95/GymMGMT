@@ -40,6 +40,7 @@ namespace GymMGMT.Api.Middleware
                 UnauthorizedException => StatusCodes.Status401Unauthorized,
                 NotFoundException => StatusCodes.Status404NotFound,
                 ConflictException => StatusCodes.Status409Conflict,
+                UnprocessableEntityException => StatusCodes.Status422UnprocessableEntity,
                 AppValidationException => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError
             };

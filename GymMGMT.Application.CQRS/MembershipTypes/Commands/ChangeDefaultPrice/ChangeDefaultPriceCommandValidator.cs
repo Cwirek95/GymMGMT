@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using GymMGMT.Application.Common;
 
 namespace GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeDefaultPrice
 {
@@ -10,19 +10,10 @@ namespace GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeDefaultPrice
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")
-                .Must(PriceFormat)
+                .Must(PriceFormat.CheckPriceFormat)
                 .WithMessage("Wrong price format")
                 .GreaterThan(0)
                 .WithMessage("{PropertyName} must be greater than 0");
-        }
-
-        private bool PriceFormat(double price)
-        {
-            Regex expression = new Regex(@"^\d{0,10}(\.\d{1,2})?$");
-            if (expression.IsMatch(price.ToString()))
-                return true;
-
-            return false;
         }
     }
 }

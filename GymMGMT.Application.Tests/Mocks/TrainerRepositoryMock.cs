@@ -52,7 +52,7 @@ namespace GymMGMT.Application.Tests.Mocks
             return mockTrainerRepository;
         }
 
-            private static List<Trainer> GetTrainers()
+        private static List<Trainer> GetTrainers()
         {
             Fixture fixture = new Fixture();
             var trainers = fixture.Build<Trainer>().Without(x => x.User).Without(x => x.Trainings).CreateMany(10).ToList();
