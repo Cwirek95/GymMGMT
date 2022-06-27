@@ -25,7 +25,6 @@ namespace GymMGMT.Application.CQRS.Trainings.Commands.AddTraining
                 .WithMessage("Wrong price format");
             RuleFor(x => x.TrainingType)
                 .NotNull()
-                .NotEmpty()
                 .WithMessage("{ProperyName} is required");
         }
     }

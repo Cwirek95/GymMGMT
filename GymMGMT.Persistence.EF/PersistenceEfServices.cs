@@ -15,6 +15,7 @@ namespace GymMGMT.Persistence.EF
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 
+            // Repositories DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();

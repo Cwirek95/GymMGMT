@@ -61,6 +61,8 @@ namespace GymMGMT.Application.Tests.Mocks
             var trainings = fixture.Build<Training>()
                 .Without(x => x.Members)
                 .Without(x => x.Trainer)
+                .With(x => x.StartDate, DateTimeOffset.Now.AddDays(10))
+                .With(x => x.EndDate, DateTimeOffset.Now.AddDays(11))
                 .CreateMany(10).ToList();
 
             return trainings;
