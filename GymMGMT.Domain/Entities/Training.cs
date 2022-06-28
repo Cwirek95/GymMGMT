@@ -13,7 +13,7 @@ namespace GymMGMT.Domain.Entities
 
 
         public TrainingType TrainingType { get; set; }
-        public IEnumerable<Member>? Members { get; set; }
+        public List<Member> Members { get; set; } = new List<Member>();
         public int? TrainerId { get; set; }
         public Trainer? Trainer { get; set; }
     }

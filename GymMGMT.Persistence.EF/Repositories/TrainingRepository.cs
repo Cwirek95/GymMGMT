@@ -29,5 +29,20 @@ namespace GymMGMT.Persistence.EF.Repositories
 
             return training;
         }
+
+        public async Task AddMemberAsync(Training training, Member member)
+        {
+            var existTraining = await _context.Trainings
+                .Where(x => x.Id == training.Id)
+                .Include(x => x.Trainer)
+                .Include(x => x.Members)
+                .FirstOrDefaultAsync();
+
+            var existMember = await _context.Members.FindAsync(member.Id);
+
+            existTraining.Members.Add(existMember);
+            _context.Entry(existTraining).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

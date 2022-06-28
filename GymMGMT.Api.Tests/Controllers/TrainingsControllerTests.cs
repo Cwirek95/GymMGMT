@@ -1,4 +1,5 @@
 ﻿using GymMGMT.Api.Tests.Helpers;
+using GymMGMT.Application.CQRS.Trainings.Commands.AddMemberToTraining;
 using GymMGMT.Application.CQRS.Trainings.Commands.AddTraining;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainer;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingDate;
@@ -383,6 +384,78 @@ namespace GymMGMT.Api.Tests.Controllers
         }
 
         [Fact]
+        public async Task AddMember_ForValidModel_ReturnNoContentResponse()
+        {
+            // Arrange
+            var training = new Training()
+            {
+                Id = new Random().Next(),
+                StartDate = DateTimeOffset.Now.AddDays(8),
+                EndDate = DateTimeOffset.Now.AddDays(9),
+                Price = 12.99,
+                TrainerId = _trainer.Id,
+                TrainingType = Domain.Enums.TrainingType.GROUP,
+                Status = true
+            };
+            SeedTraining(training);
+
+            var member = new Member()
+            {
+                Id = new Random().Next(),
+                FirstName = "FName",
+                LastName = "LName",
+                DateOfBirth = DateTimeOffset.Now.AddYears(-23),
+                PhoneNumber = "+4812343548",
+                UserId = _user.Id,
+                Status = true
+            };
+            SeedMember(member);
+
+            var model = new AddMemberToTrainingCommand()
+            {
+                TrainingId = training.Id,
+                MemberId = member.Id,
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/trainings/member", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task AddMember_ForNonExistingTraining_ReturnNotFoundResponse()
+        {
+            // Arrange
+            var member = new Member()
+            {
+                Id = new Random().Next(),
+                FirstName = "FName",
+                LastName = "LName",
+                DateOfBirth = DateTimeOffset.Now.AddYears(-23),
+                PhoneNumber = "+4812343548",
+                UserId = _user.Id,
+                Status = true
+            };
+            SeedMember(member);
+
+            var model = new AddMemberToTrainingCommand()
+            {
+                TrainingId = new Random().Next(),
+                MemberId = member.Id,
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/trainings/member", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async Task Delete_ForValidModel_ReturnNoContentResponse()
         {
             // Arrange
@@ -462,6 +535,16 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedMember(Member member)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Members.Add(member);
             _dbContext.SaveChanges();
         }
     }

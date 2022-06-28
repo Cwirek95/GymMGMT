@@ -7,6 +7,7 @@
         public DateTimeOffset DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public MembershipDto Membership { get; set; }
+        public IEnumerable<TrainingDto> Trainings { get; set; }
         public bool Status { get; set; }
     }
 }

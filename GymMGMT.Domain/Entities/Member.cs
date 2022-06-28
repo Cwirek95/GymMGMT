@@ -16,6 +16,6 @@ namespace GymMGMT.Domain.Entities
         public User? User { get; set; }
         public int? MembershipId { get; set; }
         public Membership? Membership { get; set; }
-        public IEnumerable<Training>? Trainings { get; set; }
+        public List<Training> Trainings { get; set; } = new List<Training>();
     }
 }

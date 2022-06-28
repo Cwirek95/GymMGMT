@@ -113,6 +113,7 @@ namespace GymMGMT.Application.CQRS
                     dest => dest.TrainerLastName,
                     opt => opt.MapFrom(src => src.Trainer.LastName)
                 );
+            CreateMap<Training, TrainingDto>().ReverseMap();
             #endregion
         }
     }

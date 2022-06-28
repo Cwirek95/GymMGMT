@@ -6,5 +6,6 @@ namespace GymMGMT.Application.Contracts.Repositories
     {
         Task<IReadOnlyList<Trainer>> GetAllWithDetailsAsync();
         Task<Trainer> GetByIdWithDetailsAsync(int id);
+        Task<Trainer> GetByUserIdWithDetailsAsync(Guid userId);
     }
 }

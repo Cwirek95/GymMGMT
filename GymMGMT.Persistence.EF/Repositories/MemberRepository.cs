@@ -31,5 +31,16 @@ namespace GymMGMT.Persistence.EF.Repositories
 
             return member;
         }
+
+        public async Task<Member> GetByUserIdWithDetailsAsync(Guid userId)
+        {
+            var member = await _context.Members
+                .Include(x => x.User)
+                .Include(x => x.Membership)
+                .Include(x => x.Trainings)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            return member;
+        }
     }
 }

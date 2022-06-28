@@ -9,6 +9,7 @@ namespace GymMGMT.Application.Tests.CQRS.Trainers
     {
         private IMapper _mapper;
         private Mock<ITrainerRepository> _trainerRepositoryMock;
+        private Mock<IUserRepository> _userRepositoryMock;
 
         public AddTrainerCommandHandlerTests()
         {
@@ -19,13 +20,14 @@ namespace GymMGMT.Application.Tests.CQRS.Trainers
 
             _mapper = confProvider.CreateMapper();
             _trainerRepositoryMock = TrainerRepositoryMock.GetTrainerRepository();
+            _userRepositoryMock = UserRepositoryServiceMock.GetUserRepository();
         }
 
         [Fact()]
         public async Task Handle_ForValidCommand_ReturnSuccessResponse()
         {
             // Arrange
-            var handler = new AddTrainerCommandHandler(_trainerRepositoryMock.Object, _mapper);
+            var handler = new AddTrainerCommandHandler(_trainerRepositoryMock.Object, _mapper, _userRepositoryMock.Object);
             var command = new AddTrainerCommand()
             {
                 FirstName = "Fname",
@@ -44,7 +46,7 @@ namespace GymMGMT.Application.Tests.CQRS.Trainers
         public async Task Handle_ForValidCommand_ReturnOneMoreTrainers()
         {
             // Arrange
-            var handler = new AddTrainerCommandHandler(_trainerRepositoryMock.Object, _mapper);
+            var handler = new AddTrainerCommandHandler(_trainerRepositoryMock.Object, _mapper, _userRepositoryMock.Object);
             var countBefore = (await _trainerRepositoryMock.Object.GetAllAsync()).Count;
             var command = new AddTrainerCommand()
             {

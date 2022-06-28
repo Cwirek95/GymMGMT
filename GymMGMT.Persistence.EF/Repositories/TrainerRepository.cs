@@ -13,6 +13,7 @@ namespace GymMGMT.Persistence.EF.Repositories
         public async Task<IReadOnlyList<Trainer>> GetAllWithDetailsAsync()
         {
             var trainers = await _context.Trainers
+                .Include(x => x.User)
                 .Include(x => x.Trainings)
                 .ToListAsync();
 
@@ -22,8 +23,19 @@ namespace GymMGMT.Persistence.EF.Repositories
         public async Task<Trainer> GetByIdWithDetailsAsync(int id)
         {
             var trainer = await _context.Trainers
+                .Include(x => x.User)
                 .Include(x => x.Trainings)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            return trainer;
+        }
+
+        public async Task<Trainer> GetByUserIdWithDetailsAsync(Guid userId)
+        {
+            var trainer = await _context.Trainers
+                .Include(x => x.User)
+                .Include(x => x.Trainings)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
 
             return trainer;
         }

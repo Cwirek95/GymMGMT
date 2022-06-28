@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.CQRS.Members.Events.MemberAdded;
+using GymMGMT.Application.Exceptions;
 using GymMGMT.Application.Responses;
 using GymMGMT.Domain.Entities;
 
@@ -28,6 +29,10 @@ namespace GymMGMT.Application.CQRS.Members.Commands.AddMember
         {
             var membershipType = await _membershipTypeRepository.GetByIdAsync(request.MembershipTypeId);
             var user = await _userRepository.GetByIdAsync(request.UserId);
+
+            var existMember = await _memberRepository.GetByUserIdWithDetailsAsync(request.UserId);
+            if (existMember != null)
+                throw new ConflictException("There is already a member assigned to this user");
 
             var member = _mapper.Map<Member>(request);
             member = await _memberRepository.AddAsync(member);
