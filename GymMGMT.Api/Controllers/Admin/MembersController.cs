@@ -13,7 +13,7 @@ namespace GymMGMT.Api.Controllers.Admin
 {
     [Route("api/admin")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class MembersController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -22,13 +22,21 @@ namespace GymMGMT.Api.Tests.Controllers
         public async Task LogIn_ForValidCredentials_ReturnOKResponse()
         {
             // Arrange
+            var role = new Role()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Role",
+                Status = true
+            };
+            SeedRole(role);
+
             var user = new User()
             {
                 Id = Guid.NewGuid(),
                 Email = "userExist@email.com",
                 Password = BCrypt.Net.BCrypt.HashPassword("12345"),
                 RegisteredAt = DateTimeOffset.Now,
-                RoleId = Guid.NewGuid(),
+                RoleId = role.Id,
                 Status = true
             };
             SeedUser(user);
@@ -119,6 +127,16 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedRole(Role role)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Roles.Add(role);
             _dbContext.SaveChanges();
         }
     }

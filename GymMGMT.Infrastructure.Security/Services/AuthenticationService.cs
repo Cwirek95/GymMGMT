@@ -41,6 +41,7 @@ namespace GymMGMT.Infrastructure.Security.Services
             {
                 Id = user.Id,
                 Email = user.Email,
+                Role = user.Role.Name,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
             };
 
@@ -120,7 +121,8 @@ namespace GymMGMT.Infrastructure.Security.Services
             var claims = new List<Claim>()
             {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email)
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

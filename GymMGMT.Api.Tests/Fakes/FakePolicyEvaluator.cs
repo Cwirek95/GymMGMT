@@ -12,7 +12,7 @@ namespace GymMGMT.Api.Tests.Fakes
             var claimsPrincipal = new ClaimsPrincipal();
             claimsPrincipal.AddIdentity(new ClaimsIdentity());
 
-            var ticket = new AuthenticationTicket(claimsPrincipal, "Tests");
+            var ticket = new AuthenticationTicket(claimsPrincipal, "ApiTests");
             var result = AuthenticateResult.Success(ticket);
 
             return Task.FromResult(result);

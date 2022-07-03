@@ -14,7 +14,7 @@ namespace GymMGMT.Api.Controllers
 {
     [Route("api/trainer")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin,Trainer")]
     public class TrainerController : ControllerBase
     {
         private readonly IMediator _mediator;

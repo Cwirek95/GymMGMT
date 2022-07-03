@@ -1,16 +1,33 @@
-﻿using GymMGMT.Application.Contracts.Repositories;
+﻿using GymMGMT.Api.Services;
+using GymMGMT.Application.Contracts.Repositories;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingType;
+using GymMGMT.Application.Security.Contracts;
 using GymMGMT.Application.Tests.Mocks;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace GymMGMT.Application.Tests.CQRS.Trainings
 {
     public class ChangeTrainingTypeCommandHandlerTests
     {
         private Mock<ITrainingRepository> _trainingRepositoryMock;
+        private ICurrentUserService _currentUserService;
 
         public ChangeTrainingTypeCommandHandlerTests()
         {
+            var claimsPrincipal = new ClaimsPrincipal();
+            claimsPrincipal.AddIdentity(new ClaimsIdentity(
+                new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Email, "admin@email.com"),
+                    new Claim(ClaimTypes.Role, "Admin")
+                }));
+
             _trainingRepositoryMock = TrainingRepositoryMock.GetTrainingRepository();
+            var _httpContextAccessor = new Mock<IHttpContextAccessor>();
+            _httpContextAccessor.Setup(x => x.HttpContext.User).Returns(claimsPrincipal);
+            _currentUserService = new CurrentUserService(_httpContextAccessor.Object);
         }
 
         [Fact()]
@@ -18,7 +35,7 @@ namespace GymMGMT.Application.Tests.CQRS.Trainings
         {
             // Arrange
             var items = await _trainingRepositoryMock.Object.GetAllAsync();
-            var handler = new ChangeTrainingTypeCommandHandler(_trainingRepositoryMock.Object);
+            var handler = new ChangeTrainingTypeCommandHandler(_trainingRepositoryMock.Object, _currentUserService);
             var command = new ChangeTrainingTypeCommand()
             {
                 Id = items.First().Id,
@@ -36,7 +53,7 @@ namespace GymMGMT.Application.Tests.CQRS.Trainings
         {
             // Arrange
             var items = await _trainingRepositoryMock.Object.GetAllAsync();
-            var handler = new ChangeTrainingTypeCommandHandler(_trainingRepositoryMock.Object);
+            var handler = new ChangeTrainingTypeCommandHandler(_trainingRepositoryMock.Object, _currentUserService);
             var typeBefore = (await _trainingRepositoryMock.Object.GetByIdAsync(items.Last().Id)).TrainingType;
             var command = new ChangeTrainingTypeCommand()
             {

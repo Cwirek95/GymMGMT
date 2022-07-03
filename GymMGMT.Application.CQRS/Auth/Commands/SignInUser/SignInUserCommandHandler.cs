@@ -16,7 +16,7 @@ namespace GymMGMT.Application.CQRS.Auth.Commands.SignInUser
         {
             var response = await _authenticationService.AuthenticateAsync(request.Email, request.Password);
 
-            return new AuthenticationResponse(response.Id, response.Email, response.Token);
+            return new AuthenticationResponse(response.Id, response.Email, response.Role, response.Token);
         }
     }
 }

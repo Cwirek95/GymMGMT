@@ -2,10 +2,12 @@ using GymMGMT.Api.Middleware;
 using GymMGMT.Api.Services;
 using GymMGMT.Application;
 using GymMGMT.Application.CQRS;
+using GymMGMT.Application.Security.Authorization;
 using GymMGMT.Application.Security.Contracts;
 using GymMGMT.Infrastructure;
 using GymMGMT.Infrastructure.Security;
 using GymMGMT.Persistence.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using Serilog;
@@ -48,6 +50,12 @@ builder.Services.AddInfrastructureSecurityServices(builder.Configuration);
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+builder.Services.AddScoped<IAuthorizationHandler, TrainingOwnerRequirementHandler>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Owner", builder => builder.AddRequirements(new TrainingOwnerRequirement()));
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

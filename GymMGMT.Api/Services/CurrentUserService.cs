@@ -1,4 +1,5 @@
 ﻿using GymMGMT.Application.Security.Contracts;
+using GymMGMT.Domain.Entities;
 using System.Security.Claims;
 
 namespace GymMGMT.Api.Services
