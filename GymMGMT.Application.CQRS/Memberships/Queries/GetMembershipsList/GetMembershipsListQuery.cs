@@ -1,6 +1,9 @@
-﻿namespace GymMGMT.Application.CQRS.Memberships.Queries.GetMembershipsList
+﻿using GymMGMT.Application.Caching;
+
+namespace GymMGMT.Application.CQRS.Memberships.Queries.GetMembershipsList
 {
-    public class GetMembershipsListQuery : IRequest<IEnumerable<MembershipsInListViewModel>>
+    public class GetMembershipsListQuery : IRequest<IEnumerable<MembershipsInListViewModel>>, ICacheable
     {
+        public string CacheKey => $"GetMembershipsList";
     }
 }

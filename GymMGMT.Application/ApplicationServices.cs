@@ -10,6 +10,7 @@ namespace GymMGMT.Application
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehaviour<,>));
 
             return services;
         }
