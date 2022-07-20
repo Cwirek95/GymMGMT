@@ -2,6 +2,7 @@
 using GymMGMT.Application.CQRS.Trainers.Commands.AddTrainer;
 using GymMGMT.Application.CQRS.Trainers.Commands.ChangeTrainerStatus;
 using GymMGMT.Application.CQRS.Trainers.Commands.UpdateTrainer;
+using GymMGMT.Application.CQRS.Trainings.Commands.DeleteMemberFromTraining;
 using GymMGMT.Domain.Entities;
 using GymMGMT.Persistence.EF;
 using System.Net;
@@ -197,6 +198,60 @@ namespace GymMGMT.Api.Tests.Controllers
         }
 
         [Fact]
+        public async Task DeleteMember_ForValidModel_ReturnNoContentResponse()
+        {
+            // Arrange
+            var trainer = new Trainer()
+            {
+                Id = new Random().Next(),
+                FirstName = "FName",
+                LastName = "LName",
+                UserId = _user.Id,
+                Status = true
+            };
+            SeedTrainer(trainer);
+
+            var member = new Member()
+            {
+                Id = new Random().Next(),
+                FirstName = "FName",
+                LastName = "LName",
+                DateOfBirth = DateTimeOffset.Now.AddYears(-23),
+                PhoneNumber = "+4812343548",
+                UserId = _user.Id,
+                Status = true
+            };
+            SeedMember(member);
+
+            var training = new Training()
+            {
+                Id = new Random().Next(),
+                StartDate = DateTimeOffset.Now.AddDays(8),
+                EndDate = DateTimeOffset.Now.AddDays(9),
+                Price = 12.99,
+                TrainerId = trainer.Id,
+                TrainingType = Domain.Enums.TrainingType.GROUP,
+                Status = true
+            };
+            SeedTraining(training);
+
+            training.Members.Add(member);
+
+            var model = new DeleteMemberFromTrainingCommand()
+            {
+                TrainingId = training.Id,
+                MemberId = member.Id
+            };
+            var httpContent = model.ToJsonHttpContent();
+
+            // Act
+            var response = await _httpClient.PutAsync("/api/admin/trainings/member/delete", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
         public async Task Delete_ForValidModel_ReturnNoContentResponse()
         {
             // Arrange
@@ -254,6 +309,26 @@ namespace GymMGMT.Api.Tests.Controllers
             var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
 
             _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedMember(Member member)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Members.Add(member);
+            _dbContext.SaveChanges();
+        }
+
+        private void SeedTraining(Training training)
+        {
+            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+            _dbContext.Trainings.Add(training);
             _dbContext.SaveChanges();
         }
     }

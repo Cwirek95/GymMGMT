@@ -5,6 +5,7 @@ using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingDate;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingPrice;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingStatus;
 using GymMGMT.Application.CQRS.Trainings.Commands.ChangeTrainingType;
+using GymMGMT.Application.CQRS.Trainings.Commands.DeleteMemberFromTraining;
 using GymMGMT.Application.CQRS.Trainings.Commands.DeleteTraining;
 using GymMGMT.Application.CQRS.Trainings.Queries.GetTrainingDetail;
 using GymMGMT.Application.CQRS.Trainings.Queries.GetTrainingsList;
@@ -132,6 +133,18 @@ namespace GymMGMT.Api.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPut("[controller]/member", Name = "AddMemberToTraining")]
         public async Task<ActionResult> AddMember([FromBody] AddMemberToTrainingCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("trainings/member/delete")]
+        public async Task<ActionResult> DeleteMemberFromTraining([FromBody] DeleteMemberFromTrainingCommand command)
         {
             await _mediator.Send(command);
 
