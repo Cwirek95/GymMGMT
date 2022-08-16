@@ -1,10 +1,10 @@
-﻿using GymMGMT.Api.Tests.Helpers;
+﻿using GymMGMT.Api.Tests.Fakes;
+using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.Trainers.Commands.AddTrainer;
 using GymMGMT.Application.CQRS.Trainers.Commands.ChangeTrainerStatus;
 using GymMGMT.Application.CQRS.Trainers.Commands.UpdateTrainer;
 using GymMGMT.Application.CQRS.Trainings.Commands.DeleteMemberFromTraining;
 using GymMGMT.Domain.Entities;
-using GymMGMT.Persistence.EF;
 using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
@@ -28,12 +28,12 @@ namespace GymMGMT.Api.Tests.Controllers
                 RegisteredAt = DateTimeOffset.Now,
                 Status = true,
             };
-            SeedUser(_user);
+            FakeDataSeed.SeedUser(_user, _services);
         }
 
         public void Dispose()
         {
-            RemoveUser(_user);
+            FakeDataSeed.RemoveUser(_user, _services);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedTrainer(trainer);
+            FakeDataSeed.SeedTrainer(trainer, _services);
 
             // Act
             var response = await _httpClient.GetAsync("/api/admin/trainers/" + trainer.Id);
@@ -117,7 +117,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedTrainer(trainer);
+            FakeDataSeed.SeedTrainer(trainer, _services);
 
             var model = new UpdateTrainerCommand()
             {
@@ -165,7 +165,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedTrainer(trainer);
+            FakeDataSeed.SeedTrainer(trainer, _services);
 
             var model = new ChangeTrainerStatusCommand()
             {
@@ -209,7 +209,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedTrainer(trainer);
+            FakeDataSeed.SeedTrainer(trainer, _services);
 
             var member = new Member()
             {
@@ -221,7 +221,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             var training = new Training()
             {
@@ -233,7 +233,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 TrainingType = Domain.Enums.TrainingType.GROUP,
                 Status = true
             };
-            SeedTraining(training);
+            FakeDataSeed.SeedTraining(training, _services);
 
             training.Members.Add(member);
 
@@ -263,7 +263,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = _user.Id,
                 Status = true
             };
-            SeedTrainer(trainer);
+            FakeDataSeed.SeedTrainer(trainer, _services);
 
             // Act
             var response = await _httpClient.DeleteAsync("/api/admin/trainers/" + trainer.Id);
@@ -280,56 +280,6 @@ namespace GymMGMT.Api.Tests.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        private void SeedTrainer(Trainer trainer)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Trainers.Add(trainer);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedUser(User user)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
-        }
-
-        private void RemoveUser(User user)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Users.Remove(user);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedMember(Member member)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Members.Add(member);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedTraining(Training training)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Trainings.Add(training);
-            _dbContext.SaveChanges();
         }
     }
 }

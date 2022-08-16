@@ -1,10 +1,10 @@
-﻿using GymMGMT.Api.Tests.Helpers;
+﻿using GymMGMT.Api.Tests.Fakes;
+using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.Members.Commands.AddMember;
 using GymMGMT.Application.CQRS.Members.Commands.ChangeMemberStatus;
 using GymMGMT.Application.CQRS.Members.Commands.SetMembershipToMember;
 using GymMGMT.Application.CQRS.Members.Commands.UpdateMember;
 using GymMGMT.Domain.Entities;
-using GymMGMT.Persistence.EF;
 using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
@@ -29,7 +29,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DefaultPrice = 39.99,
                 Status = true,
             };
-            SeedMembershipType(_membershipType);
+            FakeDataSeed.SeedMembershipType(_membershipType, _services);
 
             _user = new User()
             {
@@ -39,13 +39,13 @@ namespace GymMGMT.Api.Tests.Controllers
                 RegisteredAt = DateTimeOffset.Now,
                 Status = true,
             };
-            SeedUser(_user);
+            FakeDataSeed.SeedUser(_user, _services);
         }
 
         public void Dispose()
         {
-            RemoveMembershipType(_membershipType);
-            RemoveUser(_user);
+            FakeDataSeed.RemoveMembershipType(_membershipType, _services);
+            FakeDataSeed.RemoveUser(_user, _services);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipTypeId = _membershipType.Id,
                 Status = true
             };
-            SeedMembership(membership);
+            FakeDataSeed.SeedMembership(membership, _services);
 
             var member = new Member()
             {
@@ -85,7 +85,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipId = membership.Id,
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             // Act
             var response = await _httpClient.GetAsync("/api/admin/members/" + member.Id);
@@ -155,7 +155,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipId = new Random().Next(),
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             var model = new ChangeMemberStatusCommand()
             {
@@ -202,7 +202,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipId = new Random().Next(),
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             var model = new UpdateMemberCommand()
             {
@@ -256,7 +256,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipTypeId = _membershipType.Id,
                 Status = true
             };
-            SeedMembership(membership);
+            FakeDataSeed.SeedMembership(membership, _services);
 
             var member = new Member()
             {
@@ -268,7 +268,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = Guid.NewGuid(),
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             var model = new SetMembershipToMemberCommand()
             {
@@ -298,7 +298,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 UserId = Guid.NewGuid(),
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             var model = new SetMembershipToMemberCommand()
             {
@@ -328,7 +328,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipTypeId = _membershipType.Id,
                 Status = true
             };
-            SeedMembership(membership);
+            FakeDataSeed.SeedMembership(membership, _services);
 
             var model = new SetMembershipToMemberCommand()
             {
@@ -358,7 +358,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipTypeId = _membershipType.Id,
                 Status = true
             };
-            SeedMembership(membership);
+            FakeDataSeed.SeedMembership(membership, _services);
 
             var member = new Member()
             {
@@ -371,7 +371,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 MembershipId = membership.Id,
                 Status = true
             };
-            SeedMember(member);
+            FakeDataSeed.SeedMember(member, _services);
 
             // Act
             var response = await _httpClient.DeleteAsync("/api/admin/members/" + member.Id);
@@ -388,66 +388,6 @@ namespace GymMGMT.Api.Tests.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        private void SeedMember(Member member)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Members.Add(member);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedMembershipType(MembershipType membershipType)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.MembershipTypes.Add(membershipType);
-            _dbContext.SaveChanges();
-        }
-
-        private void RemoveMembershipType(MembershipType membershipType)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.MembershipTypes.Remove(membershipType);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedMembership(Membership membership)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Memberships.Add(membership);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedUser(User user)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
-        }
-
-        private void RemoveUser(User user)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Users.Remove(user);
-            _dbContext.SaveChanges();
         }
     }
 }

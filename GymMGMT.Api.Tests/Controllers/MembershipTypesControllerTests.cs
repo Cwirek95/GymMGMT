@@ -1,10 +1,10 @@
-﻿using GymMGMT.Api.Tests.Helpers;
+﻿using GymMGMT.Api.Tests.Fakes;
+using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeDefaultPrice;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.ChangeMembershipTypeStatus;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.CreateMembershipType;
 using GymMGMT.Application.CQRS.MembershipTypes.Commands.UpdateMembershipType;
 using GymMGMT.Domain.Entities;
-using GymMGMT.Persistence.EF;
 using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
@@ -42,7 +42,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DurationInDays = 20,
                 Status = true
             };
-            SeedMembershipType(membershipType);
+            FakeDataSeed.SeedMembershipType(membershipType, _services);
 
             // Act
             var response = await _httpClient.GetAsync("/api/admin/membershiptypes/" + membershipType.Id);
@@ -101,7 +101,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DurationInDays = 20,
                 Status = true
             };
-            SeedMembershipType(membershipType);
+            FakeDataSeed.SeedMembershipType(membershipType, _services);
 
             var model = new UpdateMembershipTypeCommand()
             {
@@ -147,7 +147,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DurationInDays = 20,
                 Status = true
             };
-            SeedMembershipType(membershipType);
+            FakeDataSeed.SeedMembershipType(membershipType, _services);
 
             var model = new ChangeMembershipTypeStatusCommand()
             {
@@ -191,7 +191,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DurationInDays = 20,
                 Status = true
             };
-            SeedMembershipType(membershipType);
+            FakeDataSeed.SeedMembershipType(membershipType, _services);
 
             var model = new ChangeDefaultPriceCommand()
             {
@@ -237,7 +237,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 DurationInDays = 20,
                 Status = true
             };
-            SeedMembershipType(membershipType);
+            FakeDataSeed.SeedMembershipType(membershipType, _services);
 
             // Act
             var response = await _httpClient.DeleteAsync("/api/admin/membershiptypes/" + membershipType.Id);
@@ -254,16 +254,6 @@ namespace GymMGMT.Api.Tests.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        private void SeedMembershipType(MembershipType membershipType)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.MembershipTypes.Add(membershipType);
-            _dbContext.SaveChanges();
         }
     }
 }

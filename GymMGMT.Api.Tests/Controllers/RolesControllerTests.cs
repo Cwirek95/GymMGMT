@@ -1,9 +1,9 @@
-﻿using GymMGMT.Api.Tests.Helpers;
+﻿using GymMGMT.Api.Tests.Fakes;
+using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangeRoleStatus;
 using GymMGMT.Application.CQRS.Auth.Commands.CreateRole;
 using GymMGMT.Application.CQRS.Auth.Commands.UpdateRole;
 using GymMGMT.Domain.Entities;
-using GymMGMT.Persistence.EF;
 using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
@@ -63,7 +63,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 Name = "Role1",
                 Status = true
             };
-            SeedRole(role);
+            FakeDataSeed.SeedRole(role, _services);
 
             var model = new UpdateRoleCommand()
             {
@@ -107,7 +107,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 Name = "Role1",
                 Status = true
             };
-            SeedRole(role);
+            FakeDataSeed.SeedRole(role, _services);
 
             var model = new ChangeRoleStatusCommand()
             {
@@ -132,7 +132,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 Name = "Role1",
                 Status = true
             };
-            SeedRole(role);
+            FakeDataSeed.SeedRole(role, _services);
 
             // Act
             var response = await _httpClient.DeleteAsync("/api/admin/roles/" + role.Id);
@@ -171,23 +171,13 @@ namespace GymMGMT.Api.Tests.Controllers
                 Name = "Role1",
                 Status = true
             };
-            SeedRole(role);
+            FakeDataSeed.SeedRole(role, _services);
 
             // Act
             var response = await _httpClient.GetAsync("/api/admin/roles/" + role.Id);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        private void SeedRole(Role role)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Roles.Add(role);
-            _dbContext.SaveChanges();
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using GymMGMT.Api.Tests.Helpers;
+﻿using GymMGMT.Api.Tests.Fakes;
+using GymMGMT.Api.Tests.Helpers;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangePassword;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangeUserRole;
 using GymMGMT.Application.CQRS.Auth.Commands.ChangeUserStatus;
 using GymMGMT.Domain.Entities;
-using GymMGMT.Persistence.EF;
 using System.Net;
 
 namespace GymMGMT.Api.Tests.Controllers
@@ -42,7 +42,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 RoleId = Guid.NewGuid(),
                 Status = true
             };
-            SeedUser(user);
+            FakeDataSeed.SeedUser(user, _services);
 
             // Act
             var response = await _httpClient.GetAsync("/api/admin/users/" + user.Id);
@@ -64,7 +64,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 RoleId = Guid.NewGuid(),
                 Status = true,
             };
-            SeedUser(user);
+            FakeDataSeed.SeedUser(user, _services);
 
             var model = new ChangeUserStatusCommand()
             {
@@ -92,7 +92,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 RoleId = Guid.NewGuid(),
                 Status = true
             };
-            SeedUser(user);
+            FakeDataSeed.SeedUser(user, _services);
 
             var role = new Role()
             {
@@ -100,7 +100,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 Name = "Role1",
                 Status = true
             };
-            SeedRole(role);
+            FakeDataSeed.SeedRole(role, _services);
 
             var model = new ChangeUserRoleCommand()
             {
@@ -147,7 +147,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 RoleId = Guid.NewGuid(),
                 Status = true
             };
-            SeedUser(user);
+            FakeDataSeed.SeedUser(user, _services);
 
             var model = new ChangePasswordCommand()
             {
@@ -177,7 +177,7 @@ namespace GymMGMT.Api.Tests.Controllers
                 RoleId = Guid.NewGuid(),
                 Status = true
             };
-            SeedUser(user);
+            FakeDataSeed.SeedUser(user, _services);
 
             var model = new ChangePasswordCommand()
             {
@@ -192,26 +192,6 @@ namespace GymMGMT.Api.Tests.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-        }
-
-        private void SeedUser(User user)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
-        }
-
-        private void SeedRole(Role role)
-        {
-            var scopeFactory = _services.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-            _dbContext.Roles.Add(role);
-            _dbContext.SaveChanges();
         }
     }
 }
