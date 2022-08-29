@@ -83,13 +83,6 @@ Testing:
 <br>
 
 ---
-## Usage
-After you clone this repo to your desktop, go to its root directory and run `npm install` to install its dependencies.
-Once the dependencies are installed, you can to start the application.
-
-<br>
-
----
 ## Contact
 Created by [@Cwirek95](https://github.com/Cwirek95) - feel free to contact me! <br>
 
